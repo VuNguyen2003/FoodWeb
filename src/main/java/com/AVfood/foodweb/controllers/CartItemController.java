@@ -21,8 +21,5 @@ public class CartItemController {
         return "Received: " + items.toString();
     }
 
-    @GetMapping
-    public List<CartItem> getAllUsers() {
-        return CartItemRepository.findByProductId();
-    }
+    
 }
