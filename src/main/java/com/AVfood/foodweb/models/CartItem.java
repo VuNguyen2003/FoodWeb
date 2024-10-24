@@ -16,7 +16,7 @@ public class CartItem implements Serializable {
     private String cartId;
 
     @Column(name = "ProductId", nullable = false, length = 100)
-    private String productId;
+    private Long productId;
 
     @Column(name = "QuantityItem", nullable = false)
     private int quantityItem;
@@ -27,7 +27,7 @@ public class CartItem implements Serializable {
     // Constructors
     public CartItem() {}
 
-    public CartItem(String cartItemId, String cartId, String productId, int quantityItem, BigDecimal totalItem) {
+    public CartItem(String cartItemId, String cartId, long productId, int quantityItem, BigDecimal totalItem) {
         this.cartItemId = cartItemId;
         this.cartId = cartId;
         this.productId = productId;
@@ -52,11 +52,11 @@ public class CartItem implements Serializable {
         this.cartId = cartId;
     }
 
-    public String getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 
