@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class CartItemService {
     @Autowired
-    private CartItemRepository cartItemRepository;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
     public CartItemService(CartItemRepository cartItemRepository) {
@@ -26,7 +26,7 @@ public class CartItemService {
         return "Sản phẩm đã được thêm vào giỏ hàng!";
     }
     @Component
-    public class CartUtils {
+    public static class CartUtils {
         public String formatCartMessage(Long productId) {
             return "Sản phẩm có ID: " + productId;
         }
