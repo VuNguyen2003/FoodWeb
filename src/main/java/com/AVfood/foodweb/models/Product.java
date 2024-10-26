@@ -9,7 +9,7 @@ public class Product implements Serializable {
 
     @Id
     @Column(name = "ProductId", nullable = false, length = 100)
-    private String productId;
+    private long productId;
 
     @Column(name = "CategoryId", length = 100)
     private String categoryId;
@@ -35,7 +35,7 @@ public class Product implements Serializable {
     // Constructors
     public Product() {}
 
-    public Product(String productId, String categoryId, String productName, String productDescripsion, int stock, String productImageUrl, int view, int like) {
+    public Product(long productId, String categoryId, String productName, String productDescripsion, int stock, String productImageUrl, int view, int like) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.productName = productName;
@@ -47,11 +47,11 @@ public class Product implements Serializable {
     }
 
     // Getters and Setters
-    public String getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(long productId) {
         this.productId = productId;
     }
 
