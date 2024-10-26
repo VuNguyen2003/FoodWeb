@@ -16,7 +16,7 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
 
-    @PostMapping("/addItems")
+    @PostMapping("/api/v1/addItems")
     public String addItems(@RequestBody List<String> items) {
         return "Received: " + items.toString();
     }
