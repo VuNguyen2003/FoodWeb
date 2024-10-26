@@ -42,4 +42,8 @@ public class CartItemService {
     public List<CartItem> getItemsByProductId(Long productId) {
         return cartItemRepository.findAll();
     }
+
+    public List<CartItem> getAllCartItems() {
+        return cartItemRepository.findAll();
+    }
 }

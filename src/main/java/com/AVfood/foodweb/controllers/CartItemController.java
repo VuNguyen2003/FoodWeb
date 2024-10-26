@@ -21,5 +21,8 @@ public class CartItemController {
         return "Received: " + items.toString();
     }
 
-    
+    @GetMapping ("/api/v1/getItems")
+    public List<CartItem> getAllCartItems() {
+        return cartItemService.getAllCartItems();
+    }
 }
