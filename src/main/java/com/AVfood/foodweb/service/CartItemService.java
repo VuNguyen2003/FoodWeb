@@ -19,7 +19,7 @@ public class CartItemService {
     }
 
     @Transactional
-    public String addItemToCart(Long productId) {
+    public String addItemToCart(String productId) {
         CartItem cartItem = new CartItem();
         cartItem.setProductId(productId);
         cartItemRepository.save(cartItem);  // Lưu giỏ hàng vào database
@@ -27,7 +27,7 @@ public class CartItemService {
     }
 
     @Transactional
-    public String addItemToCart(Long productId, int quantity) {
+    public String addItemToCart(String productId, int quantity) {
         CartItem cartItem = new CartItem();
         cartItem.setProductId(productId);
         cartItem.setQuantityItem(quantity); // Đảm bảo phương thức set đúng
@@ -35,7 +35,7 @@ public class CartItemService {
         return "Sản phẩm đã được thêm vào giỏ hàng!";
     }
 
-    public List<CartItem> getItemsByProductId(Long productId) {
+    public List<CartItem> getItemsByProductId(String productId) {
         return cartItemRepository.findByProductId(productId); // Sử dụng phương thức tìm kiếm theo productId
     }
 

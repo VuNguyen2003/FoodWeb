@@ -1,17 +1,16 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "Status")
-public class Status implements Serializable {
+@Table(name = "status")
+public class Status {
 
     @Id
-    @Column(name = "StatusId", length = 100)
+    @Column(name = "status_id", length = 100)
     private String statusId;
 
-    @Column(name = "StatusName", length = 100)
+    @Column(name = "status_name", length = 100)
     private String statusName;
 
     // Constructors

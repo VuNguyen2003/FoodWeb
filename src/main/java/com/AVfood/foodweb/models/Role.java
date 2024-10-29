@@ -1,14 +1,13 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "Role")
-public class Role implements Serializable {
+@Table(name = "role")
+public class Role {
 
     @Id
-    @Column(name = "RoleId", length = 100)
+    @Column(name = "role_id", length = 100)
     private String roleId;
 
     // Constructors

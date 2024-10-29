@@ -1,45 +1,43 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Account")
-public class Account implements Serializable {
+@Table(name = "account")
+public class Account {
 
     @Id
-    @Column(name = "AccountId", length = 100)
+    @Column(name = "account_id", length = 100)
     private String accountId;
 
-    @Column(name = "RoleId", length = 100)
+    @Column(name = "role_id", length = 255)
     private String roleId;
 
-    @Column(name = "PaymentMethodId", length = 100)
+    @Column(name = "payment_method_id", length = 100)
     private String paymentMethodId;
 
-    @Column(name = "CartId", length = 100)
+    @Column(name = "cart_id", length = 100)
     private String cartId;
 
-    @Column(name = "FullName", length = 225)
+    @Column(name = "full_name", length = 255)
     private String fullName;
 
-    @Column(name = "Email", length = 225)
-    private Timestamp email;
+    @Column(name = "email", length = 255)
+    private String email;
 
-    @Column(name = "Address", length = 100)
+    @Column(name = "address", length = 100)
     private String address;
 
-    @Column(name = "Username", length = 100)
+    @Column(name = "username", length = 100)
     private String username;
 
-    @Column(name = "Password", length = 100)
+    @Column(name = "password", length = 100)
     private String password;
 
     // Constructors
     public Account() {}
 
-    public Account(String accountId, String roleId, String paymentMethodId, String cartId, String fullName, Timestamp email, String address, String username, String password) {
+    public Account(String accountId, String roleId, String paymentMethodId, String cartId, String fullName, String email, String address, String username, String password) {
         this.accountId = accountId;
         this.roleId = roleId;
         this.paymentMethodId = paymentMethodId;
@@ -92,11 +90,11 @@ public class Account implements Serializable {
         this.fullName = fullName;
     }
 
-    public Timestamp getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(Timestamp email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
