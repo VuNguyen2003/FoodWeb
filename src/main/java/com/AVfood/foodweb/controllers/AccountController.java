@@ -1,5 +1,6 @@
 package com.AVfood.foodweb.controllers;
 
+import com.AVfood.foodweb.dto.request.AccountRequest;
 import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.service.AccountService;
 import com.AVfood.foodweb.exceptions.AccountExceptions; // Import lớp ngoại lệ chung
@@ -21,12 +22,16 @@ public class AccountController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Account account) {
-        boolean isRegistered = accountService.register(account);
-        if (!isRegistered) {
-            throw new AccountExceptions.AccountAlreadyExistsException("Tên người dùng đã tồn tại!");
-        }
-        return ResponseEntity.ok("Đăng ký thành công!");
+    public ResponseEntity<String> register(@RequestBody AccountRequest accountRequest) {
+        Account account = new Account();
+        account.setUsername(accountRequest.getUsername());
+        account.setPassword(accountRequest.getPassword()); // Mật khẩu nên được mã hóa trước khi lưu
+        account.setFullName(accountRequest.getFullName());
+        account.setEmail(accountRequest.getEmail());
+        account.setAddress(accountRequest.getAddress());
+        // Thêm logic để lưu tài khoản vào cơ sở dữ liệu
+        accountService.saveAccount(account);
+        return ResponseEntity.ok("Account registered successfully");
     }
 
     @PostMapping("/login")
