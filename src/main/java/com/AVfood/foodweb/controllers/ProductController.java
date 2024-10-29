@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}") // Sử dụng id tại đây
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
         Product product = productService.getProductById(id);
         if (product != null) {
             return ResponseEntity.ok(product);
@@ -38,7 +38,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}") // Sử dụng id tại đây
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> updateProduct(@PathVariable String id, @RequestBody Product product) {
         Product updatedProduct = productService.updateProduct(id, product);
         if (updatedProduct != null) {
             return ResponseEntity.ok(updatedProduct);
@@ -48,7 +48,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}") // Sử dụng id tại đây
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         boolean isDeleted = productService.deleteProduct(id);
         if (isDeleted) {
             return ResponseEntity.noContent().build();

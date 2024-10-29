@@ -21,19 +21,21 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Long id) {
+    // Sửa đổi kiểu tham số từ Long sang String
+    public Product getProductById(String id) {
         return productRepository.findById(id).orElse(null);
     }
 
-    public Product updateProduct(Long id, Product product) {
-        if (productRepository.existsById(id)) {  // Sửa đổi từ productRepository.id
-            product.setProductId(id);  // Sử dụng setId thay vì setProductId
+    public Product updateProduct(String id, Product product) {
+        if (productRepository.existsById(id)) {
+            product.setProductId(id); // Đảm bảo rằng ID được thiết lập đúng
             return productRepository.save(product);
         }
         return null; // hoặc có thể ném ra ngoại lệ
     }
 
-    public boolean deleteProduct(Long id) {
+    // Sửa đổi kiểu tham số từ Long sang String
+    public boolean deleteProduct(String id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return true;

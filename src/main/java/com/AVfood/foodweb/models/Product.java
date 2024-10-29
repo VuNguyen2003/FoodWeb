@@ -1,41 +1,40 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "Product")
-public class Product implements Serializable {
+@Table(name = "product")
+public class Product {
 
     @Id
-    @Column(name = "ProductId", length = 100)
-    private long productId;
+    @Column(name = "product_id", length = 100)
+    private String productId;
 
-    @Column(name = "CategoryId", length = 100)
+    @Column(name = "category_id", length = 100)
     private String categoryId;
 
-    @Column(name = "ProductName", length = 100)
+    @Column(name = "product_name", length = 100)
     private String productName;
 
-    @Column(name = "ProductDescription", length = 1000)
+    @Column(name = "product_description", length = 1000)
     private String productDescription;
 
-    @Column(name = "Stock")
+    @Column(name = "stock")
     private int stock;
 
-    @Column(name = "ProductImageUrl", length = 1000)
+    @Column(name = "product_image_url", length = 1000)
     private String productImageUrl;
 
-    @Column(name = "View")
+    @Column(name = "view")
     private int view;
 
-    @Column(name = "Likes")
+    @Column(name = "likes")
     private int likes;
 
     // Constructors
     public Product() {}
 
-    public Product(long productId, String categoryId, String productName, String productDescription, int stock, String productImageUrl, int view, int likes) {
+    public Product(String productId, String categoryId, String productName, String productDescription, int stock, String productImageUrl, int view, int likes) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.productName = productName;
@@ -47,11 +46,11 @@ public class Product implements Serializable {
     }
 
     // Getters and Setters
-    public long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

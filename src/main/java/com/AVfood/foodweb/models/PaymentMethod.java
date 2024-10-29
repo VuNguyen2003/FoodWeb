@@ -1,17 +1,16 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
 
 @Entity
-@Table(name = "PaymentMethod")
-public class PaymentMethod implements Serializable {
+@Table(name = "payment_method")
+public class PaymentMethod {
 
     @Id
-    @Column(name = "PaymentMethodId", length = 100)
+    @Column(name = "payment_method_id", length = 100)
     private String paymentMethodId;
 
-    @Column(name = "PaymentMethodName", length = 100)
+    @Column(name = "payment_method_name", length = 100)
     private String paymentMethodName;
 
     // Constructors
