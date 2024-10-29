@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class PaymentMethod implements Serializable {
 
     @Id
-    @Column(name = "PaymentMethodId", nullable = false, length = 100)
+    @Column(name = "PaymentMethodId", length = 100)
     private String paymentMethodId;
 
     @Column(name = "PaymentMethodName", length = 100)

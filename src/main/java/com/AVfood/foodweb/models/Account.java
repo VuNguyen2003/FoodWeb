@@ -9,10 +9,10 @@ import java.sql.Timestamp;
 public class Account implements Serializable {
 
     @Id
-    @Column(name = "AccountId", nullable = false, length = 100)
+    @Column(name = "AccountId", length = 100)
     private String accountId;
 
-    @Column(name = "RoleId", nullable = false, length = 100)
+    @Column(name = "RoleId", length = 100)
     private String roleId;
 
     @Column(name = "PaymentMethodId", length = 100)
@@ -21,19 +21,19 @@ public class Account implements Serializable {
     @Column(name = "CartId", length = 100)
     private String cartId;
 
-    @Column(name = "FullName", length = 100)
+    @Column(name = "FullName", length = 225)
     private String fullName;
 
-    @Column(name = "Email")
+    @Column(name = "Email", length = 225)
     private Timestamp email;
 
     @Column(name = "Address", length = 100)
     private String address;
 
-    @Column(name = "Username", nullable = false, length = 100)
+    @Column(name = "Username", length = 100)
     private String username;
 
-    @Column(name = "Password", nullable = false, length = 100)
+    @Column(name = "Password", length = 100)
     private String password;
 
     // Constructors

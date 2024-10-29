@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Role implements Serializable {
 
     @Id
-    @Column(name = "RoleId", nullable = false, length = 100)
+    @Column(name = "RoleId", length = 100)
     private String roleId;
 
     // Constructors
