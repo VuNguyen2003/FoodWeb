@@ -44,4 +44,9 @@ public class GloblaExeptionHandler {
     public ResponseEntity<String> handleAccountUpdateFailed(AccountExceptions.AccountUpdateFailedException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    @ExceptionHandler(CartItemException.class)
+    public ResponseEntity<String> handleCartItemException(CartItemException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 }
