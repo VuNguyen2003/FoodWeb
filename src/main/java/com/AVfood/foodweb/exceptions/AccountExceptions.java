@@ -1,6 +1,6 @@
 package com.AVfood.foodweb.exceptions;
 
-public class AccountExceptions {
+public class AccountExceptions extends RuntimeException {
 
     public static class AccountAlreadyExistsException extends RuntimeException {
         public AccountAlreadyExistsException(String message) {
