@@ -6,28 +6,28 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "OrderDetail")
-public class OrderDetail implements Serializable {
+public class OrderDetails implements Serializable {
 
     @Id
-    @Column(name = "OrderDetailId", nullable = false, length = 100)
+    @Column(name = "OrderDetailId", length = 100)
     private String orderDetailId;
 
-    @Column(name = "ProductId", nullable = false, length = 100)
+    @Column(name = "ProductId", length = 100)
     private String productId;
 
-    @Column(name = "OrderId", nullable = false, length = 100)
+    @Column(name = "OrderId", length = 100)
     private String orderId;
 
-    @Column(name = "OrderQuantity", nullable = false)
+    @Column(name = "OrderQuantity")
     private int orderQuantity;
 
-    @Column(name = "OrderTotal", nullable = false, precision = 10, scale = 2)
+    @Column(name = "OrderTotal", precision = 10, scale = 2)
     private BigDecimal orderTotal;
 
     // Constructors
-    public OrderDetail() {}
+    public OrderDetails() {}
 
-    public OrderDetail(String orderDetailId, String productId, String orderId, int orderQuantity, BigDecimal orderTotal) {
+    public OrderDetails(String orderDetailId, String productId, String orderId, int orderQuantity, BigDecimal orderTotal) {
         this.orderDetailId = orderDetailId;
         this.productId = productId;
         this.orderId = orderId;

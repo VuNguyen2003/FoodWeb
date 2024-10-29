@@ -1,6 +1,7 @@
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.models.CartItem;
+import com.AVfood.foodweb.models.CartResponse;
 import com.AVfood.foodweb.repositorys.CartItemRepository; // Sửa lỗi chính tả ở đây
 import com.AVfood.foodweb.service.CartItemService;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,15 @@ public class CartItemController {
     @GetMapping("/getitems")
     public ResponseEntity<List<CartItem>> getAllCartItems() {
         List<CartItem> items = cartItemService.getAllCartItems();
-        return ResponseEntity.ok(items); // Trả về danh sách CartItem
+
+        CartResponse response;
+        if (items.isEmpty()) {
+            response = new CartResponse("Không có gì trong giỏ hàng", items);
+        } else {
+            response = new CartResponse("Giỏ hàng của bạn", items);
+        }
+
+        return ResponseEntity.ok(response.getItems());
     }
 
     @DeleteMapping("/remove/{id}")

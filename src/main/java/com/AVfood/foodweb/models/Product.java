@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Product implements Serializable {
 
     @Id
-    @Column(name = "ProductId", nullable = false, length = 100)
+    @Column(name = "ProductId", length = 100)
     private long productId;
 
     @Column(name = "CategoryId", length = 100)
@@ -17,8 +17,8 @@ public class Product implements Serializable {
     @Column(name = "ProductName", length = 100)
     private String productName;
 
-    @Column(name = "ProductDescripsion", length = 1000)
-    private String productDescripsion;
+    @Column(name = "ProductDescription", length = 1000)
+    private String productDescription;
 
     @Column(name = "Stock")
     private int stock;
@@ -29,21 +29,21 @@ public class Product implements Serializable {
     @Column(name = "View")
     private int view;
 
-    @Column(name = "like")
-    private int like;
+    @Column(name = "Likes")
+    private int likes;
 
     // Constructors
     public Product() {}
 
-    public Product(long productId, String categoryId, String productName, String productDescripsion, int stock, String productImageUrl, int view, int like) {
+    public Product(long productId, String categoryId, String productName, String productDescription, int stock, String productImageUrl, int view, int likes) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.productName = productName;
-        this.productDescripsion = productDescripsion;
+        this.productDescription = productDescription;
         this.stock = stock;
         this.productImageUrl = productImageUrl;
         this.view = view;
-        this.like = like;
+        this.likes = likes;
     }
 
     // Getters and Setters
@@ -71,12 +71,12 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
-    public String getProductDescripsion() {
-        return productDescripsion;
+    public String getProductDescription() {
+        return productDescription;
     }
 
-    public void setProductDescripsion(String productDescripsion) {
-        this.productDescripsion = productDescripsion;
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 
     public int getStock() {
@@ -103,11 +103,11 @@ public class Product implements Serializable {
         this.view = view;
     }
 
-    public int getLike() {
-        return like;
+    public int getLikes() {
+        return likes;
     }
 
-    public void setLike(int like) {
-        this.like = like;
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

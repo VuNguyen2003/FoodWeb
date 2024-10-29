@@ -9,13 +9,13 @@ import java.sql.Timestamp;
 public class Cart implements Serializable {
 
     @Id
-    @Column(name = "CartId", nullable = false, length = 100)
+    @Column(name = "CartId", length = 100)
     private String cartId;
 
-    @Column(name = "StatusId", nullable = false, length = 100)
+    @Column(name = "StatusId", length = 100)
     private String statusId;
 
-    @Column(name = "CartDate", nullable = false)
+    @Column(name = "CartDate")
     private Timestamp cartDate;
 
     // Constructors

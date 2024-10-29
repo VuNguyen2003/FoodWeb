@@ -1,39 +1,26 @@
-package com.AVfood.foodweb.models;
+package com.AVfood.foodweb.dto.request;
 
-import jakarta.persistence.*;
-import java.io.Serializable;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "CartItem")
-public class CartItem implements Serializable {
+public class CartItemRequest {
 
-    @Id
-    @Column(name = "CartItemId", length = 100)
+    @NotBlank(message = "CartItemId is required")
     private String cartItemId;
 
-    @Column(name = "CartId", length = 100)
+    @NotBlank(message = "CartId is required")
     private String cartId;
 
-    @Column(name = "ProductId", length = 100)
+    @NotNull(message = "ProductId is required")
     private Long productId;
 
-    @Column(name = "QuantityItem")
+    @Positive(message = "QuantityItem must be greater than zero")
     private int quantityItem;
 
-    @Column(name = "TotalItem", precision = 10, scale = 2)
+    @NotNull(message = "TotalItem is required")
     private BigDecimal totalItem;
-
-    // Constructors
-    public CartItem() {}
-
-    public CartItem(String cartItemId, String cartId, long productId, int quantityItem, BigDecimal totalItem) {
-        this.cartItemId = cartItemId;
-        this.cartId = cartId;
-        this.productId = productId;
-        this.quantityItem = quantityItem;
-        this.totalItem = totalItem;
-    }
 
     // Getters and Setters
     public String getCartItemId() {
@@ -52,11 +39,11 @@ public class CartItem implements Serializable {
         this.cartId = cartId;
     }
 
-    public long getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 

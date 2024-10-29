@@ -8,10 +8,10 @@ import java.io.Serializable;
 public class Status implements Serializable {
 
     @Id
-    @Column(name = "StatusId", nullable = false, length = 100)
+    @Column(name = "StatusId", length = 100)
     private String statusId;
 
-    @Column(name = "StatusName", nullable = false, length = 100)
+    @Column(name = "StatusName", length = 100)
     private String statusName;
 
     // Constructors
