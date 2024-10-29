@@ -7,8 +7,10 @@ import jakarta.persistence.*;
 public class Account {
 
     @Id
-    @Column(name = "account_id", length = 100)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private String accountId;
+
 
     @Column(name = "role_id", length = 255)
     private String roleId;
