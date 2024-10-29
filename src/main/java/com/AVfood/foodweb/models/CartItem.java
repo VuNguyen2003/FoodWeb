@@ -1,33 +1,31 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Entity
-@Table(name = "CartItem")
-public class CartItem implements Serializable {
+@Table(name = "cart_item")
+public class CartItem {
 
     @Id
-    @Column(name = "CartItemId", length = 100)
+    @Column(name = "cart_item_id", length = 100)
     private String cartItemId;
 
-    @Column(name = "CartId", length = 100)
+    @Column(name = "cart_id", length = 100)
     private String cartId;
 
-    @Column(name = "ProductId", length = 100)
-    private Long productId;
+    @Column(name = "product_id", length = 100)
+    private String productId;
 
-    @Column(name = "QuantityItem")
+    @Column(name = "quantity_item")
     private int quantityItem;
 
-    @Column(name = "TotalItem", precision = 10, scale = 2)
-    private BigDecimal totalItem;
+    @Column(name = "total_item", precision = 10, scale = 2)
+    private java.math.BigDecimal totalItem;
 
     // Constructors
     public CartItem() {}
 
-    public CartItem(String cartItemId, String cartId, long productId, int quantityItem, BigDecimal totalItem) {
+    public CartItem(String cartItemId, String cartId, String productId, int quantityItem, java.math.BigDecimal totalItem) {
         this.cartItemId = cartItemId;
         this.cartId = cartId;
         this.productId = productId;
@@ -52,11 +50,11 @@ public class CartItem implements Serializable {
         this.cartId = cartId;
     }
 
-    public long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -68,11 +66,11 @@ public class CartItem implements Serializable {
         this.quantityItem = quantityItem;
     }
 
-    public BigDecimal getTotalItem() {
+    public java.math.BigDecimal getTotalItem() {
         return totalItem;
     }
 
-    public void setTotalItem(BigDecimal totalItem) {
+    public void setTotalItem(java.math.BigDecimal totalItem) {
         this.totalItem = totalItem;
     }
 }

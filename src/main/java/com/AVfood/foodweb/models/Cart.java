@@ -1,27 +1,25 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
 
 @Entity
-@Table(name = "Cart")
-public class Cart implements Serializable {
+@Table(name = "cart")
+public class Cart {
 
     @Id
-    @Column(name = "CartId", length = 100)
+    @Column(name = "cart_id", length = 100)
     private String cartId;
 
-    @Column(name = "StatusId", length = 100)
+    @Column(name = "status_id", length = 100)
     private String statusId;
 
-    @Column(name = "CartDate")
-    private Timestamp cartDate;
+    @Column(name = "cart_date")
+    private java.sql.Timestamp cartDate;
 
     // Constructors
     public Cart() {}
 
-    public Cart(String cartId, String statusId, Timestamp cartDate) {
+    public Cart(String cartId, String statusId, java.sql.Timestamp cartDate) {
         this.cartId = cartId;
         this.statusId = statusId;
         this.cartDate = cartDate;
@@ -44,11 +42,11 @@ public class Cart implements Serializable {
         this.statusId = statusId;
     }
 
-    public Timestamp getCartDate() {
+    public java.sql.Timestamp getCartDate() {
         return cartDate;
     }
 
-    public void setCartDate(Timestamp cartDate) {
+    public void setCartDate(java.sql.Timestamp cartDate) {
         this.cartDate = cartDate;
     }
 }

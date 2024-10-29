@@ -23,7 +23,7 @@ public class CartItemController {
         return ResponseEntity.ok("Received: " + items.toString());
     }
 
-    @GetMapping("/getitems")
+    @GetMapping("/getallitems")
     public ResponseEntity<List<CartItem>> getAllCartItems() {
         List<CartItem> items = cartItemService.getAllCartItems();
 
