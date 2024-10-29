@@ -8,13 +8,13 @@ import java.io.Serializable;
 public class Category implements Serializable {
 
     @Id
-    @Column(name = "CategoryId", nullable = false, length = 100)
+    @Column(name = "CategoryId", length = 100)
     private String categoryId;
 
-    @Column(name = "StatusId", nullable = false, length = 100)
+    @Column(name = "StatusId", length = 100)
     private String statusId;
 
-    @Column(name = "OrderName", nullable = false, length = 100)
+    @Column(name = "OrderName", length = 100)
     private String orderName;
 
     // Constructors

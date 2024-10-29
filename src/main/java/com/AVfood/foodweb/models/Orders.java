@@ -5,22 +5,22 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "Order")
-public class Order implements Serializable {
+public class Orders implements Serializable {
 
     @Id
-    @Column(name = "OrderId", nullable = false, length = 100)
+    @Column(name = "OrderId", length = 100)
     private String orderId;
 
-    @Column(name = "StatusId", nullable = false, length = 100)
+    @Column(name = "StatusId", length = 100)
     private String statusId;
 
-    @Column(name = "OrderName", nullable = false, length = 100)
+    @Column(name = "OrderName", length = 100)
     private String orderName;
 
     // Constructors
-    public Order() {}
+    public Orders() {}
 
-    public Order(String orderId, String statusId, String orderName) {
+    public Orders(String orderId, String statusId, String orderName) {
         this.orderId = orderId;
         this.statusId = statusId;
         this.orderName = orderName;
