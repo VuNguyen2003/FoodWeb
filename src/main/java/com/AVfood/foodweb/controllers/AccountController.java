@@ -1,9 +1,10 @@
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.dto.request.AccountRequest;
+import com.AVfood.foodweb.dto.request.UpdateAccountRequest; // DTO để cập nhật tài khoản
 import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.service.AccountService;
-import com.AVfood.foodweb.exceptions.AccountExceptions; // Import lớp ngoại lệ chung
+import com.AVfood.foodweb.exceptions.AccountExceptions; // Import lớp ngoại lệ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +24,24 @@ public class AccountController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AccountRequest accountRequest) {
+        if (accountService.findByUsername(accountRequest.getUsername()).isPresent()) {
+            throw new AccountExceptions.AccountAlreadyExistsException("Tài khoản đã tồn tại với tên người dùng này!");
+        }
+
         Account account = new Account();
         account.setUsername(accountRequest.getUsername());
-        account.setPassword(accountRequest.getPassword()); // Mật khẩu nên được mã hóa trước khi lưu
+        account.setPassword(accountRequest.getPassword()); // Mã hóa mật khẩu sẽ được thực hiện trong service
         account.setFullName(accountRequest.getFullName());
         account.setEmail(accountRequest.getEmail());
         account.setAddress(accountRequest.getAddress());
-        // Thêm logic để lưu tài khoản vào cơ sở dữ liệu
-        accountService.saveAccount(account);
+
+        accountService.saveAccount(account); // Lưu tài khoản vào cơ sở dữ liệu
         return ResponseEntity.ok("Account registered successfully");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Account account) {
-        boolean isAuthenticated = accountService.authenticate(account.getUsername(), account.getPassword());
+    public ResponseEntity<String> login(@RequestBody AccountRequest accountRequest) {
+        boolean isAuthenticated = accountService.authenticate(accountRequest.getUsername(), accountRequest.getPassword());
         if (!isAuthenticated) {
             throw new AccountExceptions.AuthenticationFailedException("Tên người dùng hoặc mật khẩu không đúng!");
         }
@@ -60,8 +65,20 @@ public class AccountController {
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<String> updateAccountInfo(@PathVariable String username, @RequestBody Account account) {
-        boolean isUpdated = accountService.updateAccount(username, account);
+    public ResponseEntity<String> updateAccountInfo(@PathVariable String username, @RequestBody UpdateAccountRequest updateRequest) {
+        Account existingAccount = accountService.findByUsername(username)
+                .orElseThrow(() -> new AccountExceptions.AccountNotFoundException("Tài khoản không tìm thấy!"));
+
+        // Cập nhật thông tin tài khoản
+        existingAccount.setFullName(updateRequest.getFullName());
+        existingAccount.setEmail(updateRequest.getEmail());
+        existingAccount.setAddress(updateRequest.getAddress());
+
+        if (updateRequest.getPassword() != null && !updateRequest.getPassword().isEmpty()) {
+            existingAccount.setPassword(updateRequest.getPassword()); // Lưu mật khẩu mới chưa mã hóa
+        }
+
+        boolean isUpdated = accountService.updateAccount(username, existingAccount);
         if (!isUpdated) {
             throw new AccountExceptions.AccountUpdateFailedException("Cập nhật không thành công!");
         }
