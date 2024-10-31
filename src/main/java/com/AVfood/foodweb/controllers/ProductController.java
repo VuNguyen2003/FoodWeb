@@ -1,7 +1,7 @@
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.models.Product;
-import com.AVfood.foodweb.service.ProductService;
+import com.AVfood.foodweb.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

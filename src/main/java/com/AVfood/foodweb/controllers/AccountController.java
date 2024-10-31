@@ -1,9 +1,9 @@
 package com.AVfood.foodweb.controllers;
 
-import com.AVfood.foodweb.dto.request.AccountRequest;
-import com.AVfood.foodweb.dto.request.UpdateAccountRequest; // DTO để cập nhật tài khoản
+import com.AVfood.foodweb.dtos.request.AccountRequest;
+import com.AVfood.foodweb.dtos.request.UpdateAccountRequest; // DTO để cập nhật tài khoản
 import com.AVfood.foodweb.models.Account;
-import com.AVfood.foodweb.service.AccountService;
+import com.AVfood.foodweb.services.AccountService;
 import com.AVfood.foodweb.exceptions.AccountExceptions; // Import lớp ngoại lệ
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

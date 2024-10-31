@@ -1,4 +1,4 @@
-package com.AVfood.foodweb.dto.request;
+package com.AVfood.foodweb.dtos.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

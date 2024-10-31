@@ -1,6 +1,6 @@
-package com.AVfood.foodweb.service;
+package com.AVfood.foodweb.services;
 
-import com.AVfood.foodweb.repositorys.CartItemRepository;
+import com.AVfood.foodweb.repositories.CartItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

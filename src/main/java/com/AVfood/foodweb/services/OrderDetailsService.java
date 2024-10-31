@@ -2,8 +2,8 @@ package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.exceptions.OrderDetailNotFoundException;
 import com.AVfood.foodweb.models.OrderDetails;
-import com.AVfood.foodweb.repositorys.OrderDetailsRepository;
-import com.AVfood.foodweb.dto.request.OrderDetailsRequest;
+import com.AVfood.foodweb.repositories.OrderDetailsRepository;
+import com.AVfood.foodweb.dtos.request.OrderDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
