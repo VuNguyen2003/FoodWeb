@@ -2,7 +2,7 @@ package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.exceptions.CartItemException; // Import exception
 import com.AVfood.foodweb.models.CartItem;
-import com.AVfood.foodweb.service.CartItemService;
+import com.AVfood.foodweb.services.CartItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

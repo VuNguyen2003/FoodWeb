@@ -1,9 +1,10 @@
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.models.OrderDetails;
-import com.AVfood.foodweb.dto.request.OrderDetailsRequest;
+import com.AVfood.foodweb.dtos.request.OrderDetailsRequest;
 import com.AVfood.foodweb.services.OrderDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,18 +23,21 @@ public class OrderDetailsController {
     }
 
     @GetMapping("/{id}")
-    public OrderDetails getOrderDetailById(@PathVariable String id) {
-        return service.getOrderDetailById(id);
+    public ResponseEntity<OrderDetails> getOrderDetailById(@PathVariable String id) {
+        OrderDetails orderDetail = service.getOrderDetailById(id);
+        return ResponseEntity.ok(orderDetail);
     }
 
     @PostMapping
-    public OrderDetails createOrderDetail(@RequestBody OrderDetailsRequest dto) {
-        return service.createOrderDetail(dto);
+    public ResponseEntity<OrderDetails> createOrderDetail(@RequestBody OrderDetailsRequest dto) {
+        OrderDetails orderDetail = service.createOrderDetail(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderDetail);
     }
 
     @PutMapping("/{id}")
-    public OrderDetails updateOrderDetail(@PathVariable String id, @RequestBody OrderDetailsRequest dto) {
-        return service.updateOrderDetail(id, dto);
+    public ResponseEntity<OrderDetails> updateOrderDetail(@PathVariable String id, @RequestBody OrderDetailsRequest dto) {
+        OrderDetails updatedOrderDetail = service.updateOrderDetail(id, dto);
+        return ResponseEntity.ok(updatedOrderDetail);
     }
 
     @DeleteMapping("/{id}")

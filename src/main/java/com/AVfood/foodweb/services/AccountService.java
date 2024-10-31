@@ -1,8 +1,8 @@
-package com.AVfood.foodweb.service;
+package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.exceptions.AccountExceptions;
 import com.AVfood.foodweb.models.Account; // Import lớp Account
-import com.AVfood.foodweb.repositorys.AccountRepository; // Import lớp AccountRepository
+import com.AVfood.foodweb.repositories.AccountRepository; // Import lớp AccountRepository
 import org.springframework.beans.factory.annotation.Autowired; // Import Annotation Autowired
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Import BCryptPasswordEncoder

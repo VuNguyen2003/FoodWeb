@@ -1,4 +1,4 @@
-package com.AVfood.foodweb.repositorys;
+package com.AVfood.foodweb.repositories;
 
 import com.AVfood.foodweb.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

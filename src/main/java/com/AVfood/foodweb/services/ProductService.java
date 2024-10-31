@@ -1,7 +1,7 @@
-package com.AVfood.foodweb.service;
+package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.models.Product;
-import com.AVfood.foodweb.repositorys.ProductRepository;
+import com.AVfood.foodweb.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
