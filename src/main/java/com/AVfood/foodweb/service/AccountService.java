@@ -35,15 +35,24 @@ public class AccountService {
     // Phương thức để lưu tài khoản sau khi mã hóa mật khẩu
     public void saveAccount(Account account) {
         try {
+            // Kiểm tra xem username đã tồn tại chưa
+            if (accountRepository.existsByUsername(account.getUsername())) {
+                throw new AccountExceptions.AccountAlreadyExistsException("Username đã tồn tại.");
+            }
+
+            // Tạo ID và mã hóa mật khẩu
             String uniqueId = generateUniqueId();
             account.setAccountId(uniqueId);
             String encodedPassword = passwordEncoder.encode(account.getPassword());
             account.setPassword(encodedPassword);
+
+            // Lưu tài khoản mới
             accountRepository.save(account);
         } catch (DataIntegrityViolationException e) {
             throw new AccountExceptions.AccountUpdateFailedException("Xung đột ID xảy ra khi lưu tài khoản.");
         }
     }
+
 
 
     // Phương thức để đăng ký tài khoản mới
