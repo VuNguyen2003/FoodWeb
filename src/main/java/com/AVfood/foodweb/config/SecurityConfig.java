@@ -35,7 +35,7 @@ public class SecurityConfig{
         return Set.of(
                 "/api/v1/cartitem/getallitems",
                 "/test-connection",
-                "/api/v1/cartitem/yetAnotherEndpoint"
+                "/api/v1/products"
                 // Thêm các endpoint khác ở đây
         );
     }
