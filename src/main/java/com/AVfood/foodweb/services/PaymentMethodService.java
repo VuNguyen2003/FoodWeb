@@ -1,6 +1,7 @@
 package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.dtos.PaymentMethodRequest;
+import com.AVfood.foodweb.exceptions.PaymentMethodNotFoundException;
 import com.AVfood.foodweb.models.PaymentMethod;
 import com.AVfood.foodweb.repositories.PaymentMethodRepository;
 import org.springframework.stereotype.Service;
