@@ -109,7 +109,7 @@ public class GloblaExeptionHandler {
     public ResponseEntity<String> handleRoleNotFoundException(RoleNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
-    
+
     @ExceptionHandler(StatusNotFoundException.class)
     public ResponseEntity<String> handleStatusNotFoundException(StatusNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

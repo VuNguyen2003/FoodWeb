@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 
 @RestController
 public class TestController {
-    //http://localhost:8080/test-connection
+    //http://localhost:8081/test-connection
     @Autowired
     private DataSource dataSource;
 
