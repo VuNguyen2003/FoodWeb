@@ -1,8 +1,9 @@
 package com.AVfood.foodweb.services;
 
+import com.AVfood.foodweb.dtos.request.ProductRequest;
+import com.AVfood.foodweb.exceptions.ProductNotFoundException;
 import com.AVfood.foodweb.models.Product;
 import com.AVfood.foodweb.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,36 +11,49 @@ import java.util.List;
 @Service
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    public Product createProduct(Product product) {
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public Product createProduct(ProductRequest request) {
+        Product product = new Product(
+                request.getProductId(),
+                request.getCategoryId(),
+                request.getProductName(),
+                request.getProductDescription(),
+                request.getStock(),
+                request.getProductImageUrl(),
+                request.getView(),
+                request.getLikes()
+        );
         return productRepository.save(product);
+    }
+
+    public Product getProductById(String id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id " + id));
     }
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
-    // Sửa đổi kiểu tham số từ Long sang String
-    public Product getProductById(String id) {
-        return productRepository.findById(id).orElse(null);
+    public Product updateProduct(String id, ProductRequest request) {
+        Product product = getProductById(id);
+        product.setCategoryId(request.getCategoryId());
+        product.setProductName(request.getProductName());
+        product.setProductDescription(request.getProductDescription());
+        product.setStock(request.getStock());
+        product.setProductImageUrl(request.getProductImageUrl());
+        product.setView(request.getView());
+        product.setLikes(request.getLikes());
+        return productRepository.save(product);
     }
 
-    public Product updateProduct(String id, Product product) {
-        if (productRepository.existsById(id)) {
-            product.setProductId(id); // Đảm bảo rằng ID được thiết lập đúng
-            return productRepository.save(product);
-        }
-        return null; // hoặc có thể ném ra ngoại lệ
-    }
-
-    // Sửa đổi kiểu tham số từ Long sang String
-    public boolean deleteProduct(String id) {
-        if (productRepository.existsById(id)) {
-            productRepository.deleteById(id);
-            return true;
-        }
-        return false; // hoặc có thể ném ra ngoại lệ
+    public void deleteProduct(String id) {
+        Product product = getProductById(id);
+        productRepository.delete(product);
     }
 }
