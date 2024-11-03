@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,15 +33,23 @@ public class ProductService {
                 request.getStock(),
                 request.getProductImageUrl(),
                 request.getView(),
-                request.getLikes()
+                request.getLikes(),
+                request.getPrice() // Nếu bạn đã cập nhật trường giá
         );
         return productRepository.save(product);
     }
 
     public Product getProductById(String id) {
-        return productRepository.findById(id)
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id " + id));
+
+        // Tăng số lượt xem khi sản phẩm được xem
+        product.setView(product.getView() + 1);
+        productRepository.save(product); // Lưu lại thay đổi
+
+        return product; // Trả về sản phẩm đã cập nhật
     }
+
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();
@@ -55,6 +64,7 @@ public class ProductService {
         product.setProductImageUrl(request.getProductImageUrl());
         product.setView(request.getView());
         product.setLikes(request.getLikes());
+        product.setPrice(request.getPrice()); // Nếu bạn đã cập nhật trường giá
         return productRepository.save(product);
     }
 
@@ -64,40 +74,49 @@ public class ProductService {
     }
 
     @Value("${image.upload-dir}")
-    private String imageUploadDir; // Đường dẫn thư mục lưu trữ hình ảnh
+    private String imageUploadDir;
 
     public Product createProductWithImage(ProductRequest productRequest, MultipartFile imageFile) throws IOException {
-        String imageUrl = saveImage(imageFile); // Lưu hình ảnh và nhận đường dẫn
+        String imageUrl = saveImage(imageFile);
 
-        // Tạo sản phẩm mới với đường dẫn hình ảnh
         Product product = new Product();
         product.setProductId(productRequest.getProductId());
         product.setCategoryId(productRequest.getCategoryId());
         product.setProductName(productRequest.getProductName());
         product.setProductDescription(productRequest.getProductDescription());
         product.setStock(productRequest.getStock());
-        product.setProductImageUrl(imageUrl);  // Lưu đường dẫn hình ảnh vào product
+        product.setProductImageUrl(imageUrl);
         product.setView(0);
         product.setLikes(0);
+        product.setPrice(productRequest.getPrice()); // Set price
 
-        return productRepository.save(product); // Lưu sản phẩm vào cơ sở dữ liệu
+        return productRepository.save(product);
     }
 
     private String saveImage(MultipartFile imageFile) throws IOException {
-        // Tạo đường dẫn thư mục lưu trữ từ thuộc tính imageUploadDir
         Path uploadPath = Paths.get(imageUploadDir);
         if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath); // Tạo thư mục nếu chưa tồn tại
+            Files.createDirectories(uploadPath);
         }
 
-        // Tạo tên tệp duy nhất để tránh trùng lặp
         String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
         Path filePath = uploadPath.resolve(fileName);
-
-        // Lưu nội dung tệp vào đường dẫn filePath
         Files.write(filePath, imageFile.getBytes());
 
-        // Trả về đường dẫn tương đối của hình ảnh, có thể dùng để lưu vào product_image_url
         return "/images/" + fileName;
+    }
+
+    public List<Product> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+        return productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    // Phương thức lấy tất cả sản phẩm và sắp xếp theo giá tăng dần
+    public List<Product> getAllProductsSortedByPriceAsc() {
+        return productRepository.findAllByOrderByPriceAsc();
+    }
+
+    // Phương thức lấy tất cả sản phẩm và sắp xếp theo giá giảm dần
+    public List<Product> getAllProductsSortedByPriceDesc() {
+        return productRepository.findAllByOrderByPriceDesc();
     }
 }

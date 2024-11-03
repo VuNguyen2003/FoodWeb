@@ -1,6 +1,7 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product")
@@ -31,10 +32,13 @@ public class Product {
     @Column(name = "likes")
     private int likes;
 
+    @Column(name = "price", precision = 10, scale = 2)
+    private BigDecimal price;
+
     // Constructors
     public Product() {}
 
-    public Product(String productId, String categoryId, String productName, String productDescription, int stock, String productImageUrl, int view, int likes) {
+    public Product(String productId, String categoryId, String productName, String productDescription, int stock, String productImageUrl, int view, int likes, BigDecimal price) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.productName = productName;
@@ -43,6 +47,7 @@ public class Product {
         this.productImageUrl = productImageUrl;
         this.view = view;
         this.likes = likes;
+        this.price = price;
     }
 
     // Getters and Setters
@@ -108,5 +113,13 @@ public class Product {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

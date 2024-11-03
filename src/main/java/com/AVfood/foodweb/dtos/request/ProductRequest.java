@@ -1,5 +1,7 @@
 package com.AVfood.foodweb.dtos.request;
 
+import java.math.BigDecimal;
+
 public class ProductRequest {
     private String productId;
     private String categoryId;
@@ -9,6 +11,7 @@ public class ProductRequest {
     private String productImageUrl;
     private int view;
     private int likes;
+    private BigDecimal price; // New price field
 
     // Getters and Setters
     public String getProductId() {
@@ -73,5 +76,13 @@ public class ProductRequest {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public BigDecimal getPrice() { // Getter for price
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) { // Setter for price
+        this.price = price;
     }
 }
