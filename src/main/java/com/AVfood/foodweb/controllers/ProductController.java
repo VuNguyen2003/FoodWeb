@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -48,5 +49,26 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/products/price-range")
+    public List<Product> getProductsByPriceRange(
+            @RequestParam BigDecimal minPrice,
+            @RequestParam BigDecimal maxPrice) {
+        return productService.getProductsByPriceRange(minPrice, maxPrice);
+    }
+
+    //GET /products/sorted/asc
+    // Endpoint lấy tất cả sản phẩm sắp xếp theo giá tăng dần
+    @GetMapping("/products/sorted/asc")
+    public List<Product> getAllProductsSortedByPriceAsc() {
+        return productService.getAllProductsSortedByPriceAsc();
+    }
+
+    //GET /products/sorted/desc
+    // Endpoint lấy tất cả sản phẩm sắp xếp theo giá giảm dần
+    @GetMapping("/products/sorted/desc")
+    public List<Product> getAllProductsSortedByPriceDesc() {
+        return productService.getAllProductsSortedByPriceDesc();
     }
 }
