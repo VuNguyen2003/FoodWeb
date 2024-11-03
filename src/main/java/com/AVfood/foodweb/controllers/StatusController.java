@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/statuses")
+@RequestMapping("/api/v1/statuses")
 public class StatusController {
 
     private final StatusService statusService;
