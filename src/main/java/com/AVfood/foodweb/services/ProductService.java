@@ -7,6 +7,9 @@ import com.AVfood.foodweb.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;  // Import đúng loại Page
+import org.springframework.data.domain.PageRequest;  // Import đúng loại PageRequest
+import org.springframework.data.domain.Pageable;  // Import đúng loại Pageable
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -51,8 +54,15 @@ public class ProductService {
     }
 
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    // Phương thức lấy sản phẩm với phân trang
+    public Page<Product> getAllProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);  // Tạo đối tượng Pageable
+        return productRepository.findAll(pageable);  // Trả về danh sách sản phẩm phân trang
+    }
+
+    // Phương thức tìm kiếm sản phẩm theo tên gần đúng
+    public List<Product> searchProducts(String name) {
+        return productRepository.findByProductNameContainingIgnoreCase(name);
     }
 
     public Product updateProduct(String id, ProductRequest request) {
