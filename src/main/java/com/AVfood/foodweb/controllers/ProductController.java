@@ -5,7 +5,9 @@ import com.AVfood.foodweb.models.Product;
 import com.AVfood.foodweb.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,9 +21,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest request) {
-        return ResponseEntity.ok(productService.createProduct(request));
+    public ResponseEntity<Product> createProduct(
+            @RequestPart("product") ProductRequest productRequest,
+            @RequestPart("image") MultipartFile imageFile) throws IOException {
+        Product product = productService.createProductWithImage(productRequest, imageFile);
+        return ResponseEntity.ok(product);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable String id) {
