@@ -7,6 +7,7 @@ import com.AVfood.foodweb.dtos.request.OrdersRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,7 +29,10 @@ public class OrdersService {
         Orders order = new Orders(
                 dto.getOrderId(),
                 dto.getStatusId(),
-                dto.getOrderName()
+                dto.getOrderName(),
+                LocalDateTime.now(),        // Sử dụng thời gian hiện tại cho OrderDate
+                dto.getDeliveryDate(),      // Sử dụng DeliveryDate từ DTO nếu có
+                "Pending"                   // Mặc định Status là 'Pending'
         );
         return repository.save(order);
     }
@@ -37,6 +41,8 @@ public class OrdersService {
         Orders order = getOrderById(id);
         order.setStatusId(dto.getStatusId());
         order.setOrderName(dto.getOrderName());
+        order.setDeliveryDate(dto.getDeliveryDate());  // Cập nhật DeliveryDate
+        order.setStatus(dto.getStatus() != null ? dto.getStatus() : "Pending");  // Cập nhật trạng thái nếu có
         return repository.save(order);
     }
 
