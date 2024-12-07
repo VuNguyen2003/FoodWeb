@@ -3,11 +3,15 @@ package com.AVfood.foodweb.services;
 import com.AVfood.foodweb.exceptions.AccountExceptions;
 import com.AVfood.foodweb.models.Account; // Import lớp Account
 import com.AVfood.foodweb.repositories.AccountRepository; // Import lớp AccountRepository
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired; // Import Annotation Autowired
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Import BCryptPasswordEncoder
 import org.springframework.stereotype.Service; // Import Annotation Service
 
+import java.util.Date;
 import java.util.Optional; // Import Optional
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger; // Import AtomicInteger
@@ -83,11 +87,17 @@ public class AccountService {
     }
 
     // Phương thức để gửi email đặt lại mật khẩu
-    public boolean sendPasswordResetEmail(String email) {
-        // Logic gửi email có thể được thực hiện tại đây
-        // Nếu bạn có thể sử dụng một dịch vụ gửi email, hãy gọi nó ở đây
-        return true; // Trả về true nếu gửi email thành công
+    public String generatePasswordResetToken(String email) {
+        Optional<Account> accountOpt = accountRepository.findByEmail(email);
+
+        if (accountOpt.isEmpty()) {
+            throw new AccountExceptions.EmailNotFoundException("Email không tồn tại trong hệ thống!");
+        }
+
+        // Tạo token với email
+        return generateToken(email);
     }
+
 
     // Phương thức tìm tài khoản theo tên người dùng
     public Optional<Account> findByUsername(String username) {
@@ -115,4 +125,84 @@ public class AccountService {
         }
         return false; // Trả về false nếu không tìm thấy tài khoản
     }
+
+    public String generateToken(String username) {
+        // Khóa bí mật để ký JWT
+        String secretKey = "mySecretKey";
+
+        // Thời gian hết hạn (ví dụ: 1 giờ)
+        long expirationTime = 3600 * 1000;
+
+        // Tạo JWT
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+    public boolean validateToken(String token, String username) {
+        String secretKey = "mySecretKey";
+
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // Kiểm tra username trong token và hạn sử dụng
+            String tokenUsername = claims.getSubject();
+            Date expiration = claims.getExpiration();
+
+            return username.equals(tokenUsername) && expiration.after(new Date());
+        } catch (Exception e) {
+            // Token không hợp lệ hoặc hết hạn
+            return false;
+        }
+    }
+    public boolean invalidateToken(String token) {
+        // Ví dụ: lưu token vào danh sách bị thu hồi
+        // Hoặc xóa token trong cơ sở dữ liệu nếu lưu trữ
+        return true;
+    }
+    public String authenticateAndGenerateToken(String username, String password) {
+        // Tìm tài khoản theo username
+        Optional<Account> accountOpt = findByUsername(username);
+
+        if (accountOpt.isPresent()) {
+            Account account = accountOpt.get();
+
+            // Kiểm tra mật khẩu
+            if (passwordEncoder.matches(password, account.getPassword())) {
+                // Tạo token nếu xác thực thành công
+                return generateToken(username);
+            }
+        }
+
+        // Nếu xác thực thất bại
+        throw new AccountExceptions.AuthenticationFailedException("Tên người dùng hoặc mật khẩu không đúng!");
+    }
+
+    public String refreshToken(String oldToken) {
+        String secretKey = "mySecretKey";
+
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(oldToken)
+                    .getBody();
+
+            String username = claims.getSubject();
+
+            // Tạo token mới
+            return generateToken(username);
+        } catch (Exception e) {
+            throw new AccountExceptions.AuthenticationFailedException("Token không hợp lệ hoặc đã hết hạn!");
+        }
+    }
+    // Lưu token vào cơ sở dữ liệu (tùy chọn)
+    public void saveToken(String token, String username) {
+        // Ví dụ: lưu token vào một bảng trong cơ sở dữ liệu
+    }
+
 }
