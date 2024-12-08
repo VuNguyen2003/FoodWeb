@@ -1,6 +1,6 @@
 package com.AVfood.foodweb.controllers;
 
-import com.AVfood.foodweb.dtos.response.tokenResponse;
+import com.AVfood.foodweb.dtos.response.TokenResponse;
 import com.AVfood.foodweb.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/token")
-    public ResponseEntity<tokenResponse> generateToken(@RequestParam String accountId) {
+    public ResponseEntity<TokenResponse> generateToken(@RequestParam String accountId) {
         var token = tokenService.createToken(accountId);
-        return ResponseEntity.ok(new tokenResponse(token.getTokenValue(), token.getExpiryDate()));
+        return ResponseEntity.ok(new TokenResponse(token.getTokenValue(), token.getExpiryDate()));
     }
 
     @GetMapping("/validate")
