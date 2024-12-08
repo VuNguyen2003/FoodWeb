@@ -73,13 +73,18 @@ public class AccountController {
      */
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
-        // Gửi email đặt lại mật khẩu
+        // Gửi email đặt lại mật khẩu và nhận kết quả trả về
         boolean isEmailSent = accountService.sendPasswordResetEmail(email);
+
+        // Kiểm tra nếu email không được gửi
         if (!isEmailSent) {
             throw new AccountExceptions.EmailNotFoundException("Không tìm thấy email trong hệ thống!");
         }
+
         return ResponseEntity.ok("Email để đặt lại mật khẩu đã được gửi!");
     }
+
+
 
     /**
      * Lấy thông tin tài khoản theo tên người dùng

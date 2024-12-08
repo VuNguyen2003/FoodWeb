@@ -6,8 +6,12 @@ import com.AVfood.foodweb.repositories.AccountRepository; // Import lớp Accoun
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired; // Import Annotation Autowired
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Import BCryptPasswordEncoder
 import org.springframework.stereotype.Service; // Import Annotation Service
 
@@ -21,20 +25,20 @@ public class AccountService {
 
     private final AccountRepository accountRepository; // Repository để truy vấn tài khoản từ cơ sở dữ liệu
     private final BCryptPasswordEncoder passwordEncoder; // Mã hóa mật khẩu
+    private final JavaMailSender mailSender; // Gửi email
     private final AtomicInteger counter = new AtomicInteger(0); // Đếm số lượng ID tạo ra trong một giây
 
-    // Constructor để inject AccountRepository và BCryptPasswordEncoder
+    // Constructor duy nhất để inject các dependency
     @Autowired
-    public AccountService(AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder) {
+    public AccountService(AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder, JavaMailSender mailSender) {
         this.accountRepository = accountRepository; // Inject AccountRepository
         this.passwordEncoder = passwordEncoder; // Inject BCryptPasswordEncoder
+        this.mailSender = mailSender; // Inject JavaMailSender
     }
-
 
     private String generateUniqueId() {
         return UUID.randomUUID().toString(); // Tạo UUID và chuyển đổi thành chuỗi
     }
-
 
     // Phương thức để lưu tài khoản sau khi mã hóa mật khẩu
     public void saveAccount(Account account) {
@@ -204,5 +208,26 @@ public class AccountService {
     public void saveToken(String token, String username) {
         // Ví dụ: lưu token vào một bảng trong cơ sở dữ liệu
     }
+
+    public boolean sendPasswordResetEmail(String email) {
+        try {
+            // Tạo một email
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(email);
+            helper.setSubject("Password Reset Request");
+            helper.setText("<p>Click the link below to reset your password:</p>" +
+                    "<p><a href='http://yourdomain.com/reset-password?email=" + email + "'>Reset Password</a></p>", true);
+
+            // Gửi email
+            mailSender.send(message);
+            return true;  // Trả về true khi gửi email thành công
+        } catch (MessagingException e) {
+            // Log lỗi hoặc ném ngoại lệ nếu gửi email thất bại
+            throw new RuntimeException("Lỗi khi gửi email: " + e.getMessage(), e);
+        }
+    }
+
 
 }
