@@ -25,15 +25,16 @@ public class OrderDetailsService {
     }
 
     public OrderDetails createOrderDetail(OrderDetailsRequest dto) {
+        // Không cần truyền orderDetailId vào constructor vì Hibernate sẽ tự động tạo nó
         OrderDetails orderDetail = new OrderDetails(
-                dto.getOrderDetailId(),
                 dto.getProductId(),
                 dto.getOrderId(),
                 dto.getOrderQuantity(),
                 dto.getOrderTotal()
         );
-        return repository.save(orderDetail);
+        return repository.save(orderDetail); // Lưu đối tượng vào cơ sở dữ liệu
     }
+
 
     public OrderDetails updateOrderDetail(String id, OrderDetailsRequest dto) {
         OrderDetails orderDetail = getOrderDetailById(id);

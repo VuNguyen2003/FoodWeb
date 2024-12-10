@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 public class OrderDetails {
 
     @Id
-    @Column(name = "order_detail_id", length = 100)
-    private String orderDetailId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Tự động tạo giá trị cho orderDetailId
+    @Column(name = "order_detail_id")
+    private Long orderDetailId;  // Đổi kiểu từ String thành Long
 
     @Column(name = "product_id", length = 100)
     private String productId;
@@ -25,8 +26,7 @@ public class OrderDetails {
     // Constructors
     public OrderDetails() {}
 
-    public OrderDetails(String orderDetailId, String productId, String orderId, int orderQuantity, java.math.BigDecimal orderTotal) {
-        this.orderDetailId = orderDetailId;
+    public OrderDetails(String productId, String orderId, int orderQuantity, java.math.BigDecimal orderTotal) {
         this.productId = productId;
         this.orderId = orderId;
         this.orderQuantity = orderQuantity;
@@ -34,11 +34,11 @@ public class OrderDetails {
     }
 
     // Getters and Setters
-    public String getOrderDetailId() {
+    public Long getOrderDetailId() {
         return orderDetailId;
     }
 
-    public void setOrderDetailId(String orderDetailId) {
+    public void setOrderDetailId(Long orderDetailId) {
         this.orderDetailId = orderDetailId;
     }
 

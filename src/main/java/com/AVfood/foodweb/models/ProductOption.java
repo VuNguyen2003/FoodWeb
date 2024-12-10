@@ -1,15 +1,15 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name = "Product_Option")
 public class ProductOption {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Thêm @GeneratedValue nếu muốn giá trị tự động cho khóa chính
     @Column(name = "Product_Option_Id")
-    private String productOptionId;
+    private Long productOptionId; // Thay đổi kiểu dữ liệu thành Long nếu muốn sử dụng số tự động
 
     @ManyToOne
     @JoinColumn(name = "Product_Id", nullable = false)
@@ -22,18 +22,17 @@ public class ProductOption {
     // Constructors
     public ProductOption() {}
 
-    public ProductOption(String productOptionId, Product product, OptionCategory optionCategory) {
-        this.productOptionId = productOptionId;
+    public ProductOption(Product product, OptionCategory optionCategory) {
         this.product = product;
         this.optionCategory = optionCategory;
     }
 
     // Getters and Setters
-    public String getProductOptionId() {
+    public Long getProductOptionId() {
         return productOptionId;
     }
 
-    public void setProductOptionId(String productOptionId) {
+    public void setProductOptionId(Long productOptionId) {
         this.productOptionId = productOptionId;
     }
 
@@ -53,4 +52,3 @@ public class ProductOption {
         this.optionCategory = optionCategory;
     }
 }
-

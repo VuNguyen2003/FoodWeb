@@ -1,14 +1,12 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
-
 
 @Entity
 @Table(name = "Option")
 public class Option {
 
-    @Id
+    @Id  // Chỉnh sửa dòng này: sử dụng @Id từ jakarta.persistence
     @Column(name = "Option_Id")
     private String optionId;
 
@@ -65,5 +63,3 @@ public class Option {
         this.additionalPrice = additionalPrice;
     }
 }
-
-
