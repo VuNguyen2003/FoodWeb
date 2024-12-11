@@ -18,6 +18,11 @@ public class TokenService {
     @Autowired
     private TokenUtil jwtTokenUtil;
 
+    /**
+     * Tạo token cho tài khoản
+     * @param accountId - ID tài khoản
+     * @return Token mới được tạo
+     */
     public Token createToken(String accountId) {
         String jwtToken = jwtTokenUtil.generateToken(accountId);
 
@@ -30,6 +35,11 @@ public class TokenService {
         return token;
     }
 
+    /**
+     * Xác thực token
+     * @param tokenValue - Token cần xác thực
+     * @return Optional chứa token hợp lệ hoặc rỗng nếu không hợp lệ
+     */
     public Optional<Token> validateToken(String tokenValue) {
         Optional<Token> token = tokenRepository.findByTokenValue(tokenValue);
         if (token.isPresent() && jwtTokenUtil.validateToken(tokenValue)) {
