@@ -114,4 +114,10 @@ public class GloblaExeptionHandler {
     public ResponseEntity<String> handleStatusNotFoundException(StatusNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    // Xử lý ngoại lệ ResourceNotFoundException
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);  // Trả về mã HTTP 404 và thông báo lỗi
+    }
 }
