@@ -2,6 +2,7 @@ package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.dtos.request.OrderDetailsOptionRequest;
 import com.AVfood.foodweb.dtos.response.OrderDetailsOptionResponse;
+import com.AVfood.foodweb.exceptions.BadRequestException;
 import com.AVfood.foodweb.exceptions.ResourceNotFoundException;
 import com.AVfood.foodweb.models.OrderDetailsOption;
 import com.AVfood.foodweb.repositories.OrderDetailsOptionRepository;
@@ -32,12 +33,6 @@ public class OrderDetailsOptionService {
         return OrderDetailsOptionMapper.toDTO(entity);
     }
 
-    public OrderDetailsOptionResponse createOrderDetailsOption(OrderDetailsOptionRequest request) {
-        OrderDetailsOption entity = OrderDetailsOptionMapper.toEntity(request);
-        OrderDetailsOption savedEntity = repository.save(entity);
-        return OrderDetailsOptionMapper.toDTO(savedEntity);
-    }
-
     public OrderDetailsOptionResponse updateOrderDetailsOption(String id, OrderDetailsOptionRequest request) {
         OrderDetailsOption existingEntity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("OrderDetailsOption not found with id: " + id));
@@ -52,4 +47,15 @@ public class OrderDetailsOptionService {
                 .orElseThrow(() -> new ResourceNotFoundException("OrderDetailsOption not found with id: " + id));
         repository.delete(existingEntity);
     }
+
+    public OrderDetailsOptionResponse createOrderDetailsOption(OrderDetailsOptionRequest request) {
+        if (request.getOptionId() == null || request.getOptionId().isEmpty()) {
+            throw new BadRequestException("Option ID must not be null or empty");
+        }
+
+        OrderDetailsOption entity = OrderDetailsOptionMapper.toEntity(request);
+        OrderDetailsOption savedEntity = repository.save(entity);
+        return OrderDetailsOptionMapper.toDTO(savedEntity);
+    }
+
 }
