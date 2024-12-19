@@ -6,8 +6,8 @@
 
 ### 1. Create or Update Delivery
 
-- **Endpoint**: `/`  
-- **Method**: `POST`  
+- **Endpoint**: `/`
+- **Method**: `POST`
 - **Description**: Tạo mới hoặc cập nhật thông tin giao hàng.
 
 - **Request Body**:
@@ -21,15 +21,15 @@
     }
 - **Response**:
 
-  - **201 Created**:
-      ```json
-      {
-        "deliveryId": "D001",
-        "orderId": "O001",
-        "deliveryStatus": "Pending",
-        "deliveryDate": "2024-12-20",
-        "address": "123 Main Street, Cityville"
-      }
+    - **201 Created**:
+        ```json
+        {
+          "deliveryId": "D001",
+          "orderId": "O001",
+          "deliveryStatus": "Pending",
+          "deliveryDate": "2024-12-20",
+          "address": "123 Main Street, Cityville"
+        }
 ### 2. **Get Delivery by ID**
 - **Endpoint**: `/{id}`
 - **Method**: `GET`
@@ -40,20 +40,20 @@
 - `id` (String): ID của giao hàng cần lấy.
 - **Response**:
 
-  - **200 OK**:
-      ```json
-      {
-        "deliveryId": "D001",
-        "orderId": "O001",
-        "deliveryStatus": "Pending",
-        "deliveryDate": "2024-12-20",
-        "address": "123 Main Street, Cityville"
-      }
-  - **404 Not Found**
-      ```json
-      {
-        "error": "Delivery not found with ID: {id}"
-      }
+    - **200 OK**:
+        ```json
+        {
+          "deliveryId": "D001",
+          "orderId": "O001",
+          "deliveryStatus": "Pending",
+          "deliveryDate": "2024-12-20",
+          "address": "123 Main Street, Cityville"
+        }
+    - **404 Not Found**
+        ```json
+        {
+          "error": "Delivery not found with ID: {id}"
+        }
 ## 3. **Get Delivery by Order ID**
 - **Endpoint**: `/order/{orderId}`
 - **Method**: `GET`
