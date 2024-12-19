@@ -1,118 +1,161 @@
 package com.AVfood.foodweb.services;
 
 import com.AVfood.foodweb.exceptions.AccountExceptions;
-import com.AVfood.foodweb.models.Account; // Import lớp Account
-import com.AVfood.foodweb.repositories.AccountRepository; // Import lớp AccountRepository
-import org.springframework.beans.factory.annotation.Autowired; // Import Annotation Autowired
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Import BCryptPasswordEncoder
-import org.springframework.stereotype.Service; // Import Annotation Service
+import com.AVfood.foodweb.exceptions.EmailSendingFailedException;
+import com.AVfood.foodweb.models.Account;
+import com.AVfood.foodweb.models.Token;
+import com.AVfood.foodweb.repositories.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional; // Import Optional
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger; // Import AtomicInteger
+import java.util.Optional;
 
-@Service // Đánh dấu lớp này là một service của Spring
+@Service
 public class AccountService {
 
-    private final AccountRepository accountRepository; // Repository để truy vấn tài khoản từ cơ sở dữ liệu
-    private final BCryptPasswordEncoder passwordEncoder; // Mã hóa mật khẩu
-    private final AtomicInteger counter = new AtomicInteger(0); // Đếm số lượng ID tạo ra trong một giây
+    private final AccountRepository accountRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
+    private final JavaMailSender mailSender;
 
-    // Constructor để inject AccountRepository và BCryptPasswordEncoder
     @Autowired
-    public AccountService(AccountRepository accountRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.accountRepository = accountRepository; // Inject AccountRepository
-        this.passwordEncoder = passwordEncoder; // Inject BCryptPasswordEncoder
+    public AccountService(AccountRepository accountRepository,
+                          BCryptPasswordEncoder passwordEncoder,
+                          TokenService tokenService,
+                          JavaMailSender mailSender) {
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+        this.mailSender = mailSender;
     }
 
-
-    private String generateUniqueId() {
-        return UUID.randomUUID().toString(); // Tạo UUID và chuyển đổi thành chuỗi
-    }
-
-
-    // Phương thức để lưu tài khoản sau khi mã hóa mật khẩu
-    public void saveAccount(Account account) {
-        try {
-            // Kiểm tra xem username đã tồn tại chưa
-            if (accountRepository.existsByUsername(account.getUsername())) {
-                throw new AccountExceptions.AccountAlreadyExistsException("Username đã tồn tại.");
-            }
-
-            // Tạo ID và mã hóa mật khẩu
-            String uniqueId = generateUniqueId();
-            account.setAccountId(uniqueId);
-            String encodedPassword = passwordEncoder.encode(account.getPassword());
-            account.setPassword(encodedPassword);
-
-            // Lưu tài khoản mới
-            accountRepository.save(account);
-        } catch (DataIntegrityViolationException e) {
-            throw new AccountExceptions.AccountUpdateFailedException("Xung đột ID xảy ra khi lưu tài khoản.");
-        }
-    }
-
-
-
-    // Phương thức để đăng ký tài khoản mới
-    public boolean register(Account account) {
-        // Kiểm tra xem tài khoản đã tồn tại hay chưa
-        if (accountRepository.findByUsername(account.getUsername()).isPresent()) {
-            return false; // Trả về false nếu tài khoản đã tồn tại
-        }
-        saveAccount(account); // Lưu tài khoản mới vào cơ sở dữ liệu
-        return true; // Trả về true nếu đăng ký thành công
-    }
-
-    // Phương thức để xác thực tài khoản
-    public boolean authenticate(String username, String password) {
-        // Tìm tài khoản theo tên người dùng
-        Optional<Account> accountOpt = findByUsername(username);
-
-        // Nếu không tìm thấy tài khoản, trả về false
-        if (accountOpt.isEmpty()) {
-            return false;
-        }
-
-        // Lấy tài khoản từ Optional
-        Account account = accountOpt.get();
-
-        // Kiểm tra mật khẩu
-        return passwordEncoder.matches(password, account.getPassword()); // So sánh mật khẩu đã mã hóa
-    }
-
-    // Phương thức để gửi email đặt lại mật khẩu
-    public boolean sendPasswordResetEmail(String email) {
-        // Logic gửi email có thể được thực hiện tại đây
-        // Nếu bạn có thể sử dụng một dịch vụ gửi email, hãy gọi nó ở đây
-        return true; // Trả về true nếu gửi email thành công
-    }
-
-    // Phương thức tìm tài khoản theo tên người dùng
     public Optional<Account> findByUsername(String username) {
-        // Tìm tài khoản trong cơ sở dữ liệu
-        return accountRepository.findByUsername(username); // Giả định phương thức này tồn tại trong AccountRepository
+        return accountRepository.findByUsername(username);
     }
 
-    // Phương thức cập nhật thông tin tài khoản
-    public boolean updateAccount(String username, Account updatedAccount) {
-        Optional<Account> existingAccountOpt = findByUsername(username);
+    public Account saveAccount(Account account) {
+        return accountRepository.save(account);
+    }
 
-        // Kiểm tra nếu tài khoản đã tồn tại
-        if (existingAccountOpt.isPresent()) {
-            Account existingAccount = existingAccountOpt.get();
+    public boolean authenticate(String username, String password) {
+        // Tìm tài khoản theo username
+        Optional<Account> accountOptional = accountRepository.findByUsername(username);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            // So sánh mật khẩu người dùng nhập vào với mật khẩu lưu trong cơ sở dữ liệu
+            return passwordEncoder.matches(password, account.getPassword());
+        }
+        return false; // Trả về false nếu không tìm thấy tài khoản
+    }
+
+    public boolean updateAccount(String username, Account updatedAccount) {
+        Optional<Account> existingAccountOptional = accountRepository.findByUsername(username);
+
+        if (existingAccountOptional.isPresent()) {
+            Account existingAccount = existingAccountOptional.get();
+
             // Cập nhật thông tin tài khoản
-            existingAccount.setEmail(updatedAccount.getEmail());
             existingAccount.setFullName(updatedAccount.getFullName());
-            // Gán mật khẩu đã mã hóa nếu có thay đổi
+            existingAccount.setEmail(updatedAccount.getEmail());
+            existingAccount.setAddress(updatedAccount.getAddress());
+
+            // Nếu mật khẩu không trống, mã hóa mật khẩu mới và cập nhật
             if (updatedAccount.getPassword() != null && !updatedAccount.getPassword().isEmpty()) {
                 existingAccount.setPassword(passwordEncoder.encode(updatedAccount.getPassword()));
             }
+
             // Lưu tài khoản đã cập nhật vào cơ sở dữ liệu
             accountRepository.save(existingAccount);
-            return true; // Trả về true nếu cập nhật thành công
+            return true;
         }
         return false; // Trả về false nếu không tìm thấy tài khoản
+    }
+
+    // Đăng nhập và tạo token
+    public String authenticateAndGenerateToken(String username, String password) {
+        Optional<Account> accountOpt = accountRepository.findByUsername(username);
+
+        if (accountOpt.isPresent()) {
+            Account account = accountOpt.get();
+
+            if (passwordEncoder.matches(password, account.getPassword())) {
+                Token token = tokenService.createToken(account.getAccountId());
+                return token.getTokenValue();
+            }
+        }
+
+        throw new AccountExceptions.AuthenticationFailedException("Tên người dùng hoặc mật khẩu không đúng!");
+    }
+
+    // Xác thực token
+    public boolean validateToken(String tokenValue, String accountId) {
+        Optional<Token> tokenOpt = tokenService.validateToken(tokenValue);
+
+        if (tokenOpt.isPresent()) {
+            return tokenOpt.get().getTokenId().equals(accountId);
+        }
+
+        return false;
+    }
+
+    // Gửi email đặt lại mật khẩu
+    public boolean sendPasswordResetEmail(String email) {
+        Optional<Account> accountOpt = accountRepository.findByEmail(email);
+
+        if (accountOpt.isEmpty()) {
+            throw new AccountExceptions.EmailNotFoundException("Email không tồn tại trong hệ thống!");
+        }
+
+        Account account = accountOpt.get();
+        Token resetToken = tokenService.createToken(account.getAccountId());
+
+        // Tạo liên kết đặt lại mật khẩu
+        String resetLink = "https://your-website.com/reset-password?token=" + resetToken.getTokenValue();
+
+        // Gửi email qua JavaMailSender
+        try {
+            sendEmail(email, "Password Reset Request",
+                    "Dear " + account.getFullName() + ",\n\n" +
+                            "We received a request to reset your password. Please click the link below to reset your password:\n" +
+                            resetLink + "\n\n" +
+                            "If you did not request this, please ignore this email.\n\n" +
+                            "Best regards,\nYour Team"
+            );
+            return true;
+        } catch (Exception e) {
+            throw new EmailSendingFailedException("Không thể gửi email đặt lại mật khẩu!");
+        }
+    }
+
+    // Đặt lại mật khẩu
+    public boolean resetPassword(String tokenValue, String newPassword) {
+        Optional<Token> tokenOpt = tokenService.validateToken(tokenValue);
+
+        if (tokenOpt.isEmpty()) {
+            throw new AccountExceptions.AuthenticationFailedException("Token không hợp lệ hoặc đã hết hạn!");
+        }
+
+        Token token = tokenOpt.get();
+        Optional<Account> accountOpt = accountRepository.findById(token.getTokenId());
+
+        if (accountOpt.isPresent()) {
+            Account account = accountOpt.get();
+            account.setPassword(passwordEncoder.encode(newPassword));
+            accountRepository.save(account);
+            return true;
+        }
+
+        throw new AccountExceptions.AuthenticationFailedException("Tài khoản không tồn tại!");
+    }
+
+    private void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
     }
 }

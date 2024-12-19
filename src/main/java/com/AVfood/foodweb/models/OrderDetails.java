@@ -2,6 +2,8 @@ package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "order_details")
 public class OrderDetails {
@@ -20,7 +22,7 @@ public class OrderDetails {
     private int orderQuantity;
 
     @Column(name = "order_total", precision = 10, scale = 2)
-    private java.math.BigDecimal orderTotal;
+    private BigDecimal orderTotal;
 
     // Constructors
     public OrderDetails() {}
@@ -66,11 +68,11 @@ public class OrderDetails {
         this.orderQuantity = orderQuantity;
     }
 
-    public java.math.BigDecimal getOrderTotal() {
+    public BigDecimal getOrderTotal() {
         return orderTotal;
     }
 
-    public void setOrderTotal(java.math.BigDecimal orderTotal) {
+    public void setOrderTotal(BigDecimal orderTotal) {
         this.orderTotal = orderTotal;
     }
 }
