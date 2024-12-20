@@ -75,7 +75,7 @@
 - **401 Unauthorized**: Xác thực thất bại (sai token, sai thông tin đăng nhập).
 - **404 Not Found**: Tài khoản hoặc tài nguyên không tồn tại.
 - **500 Internal Server Error**: Lỗi máy chủ.
-### **5. Notes**
+### **Notes**
 - Tất cả các API cần tuân thủ chuẩn RESTful.
 - Đảm bảo token được truyền đúng định dạng trong header cho các API cần xác thực.
 - Đặt base URL cố định để dễ quản lý và truy cập.

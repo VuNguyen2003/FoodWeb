@@ -82,5 +82,5 @@
 - **Validation**: API xử lý dữ liệu null hoặc không hợp lệ trong phần Request Body và trả về mã lỗi phù hợp.
 - **DeliveryMapper**: Chuyển đổi giữa các đối tượng DTO (DeliveryRequest, DeliveryResponse) và thực thể (Delivery) được sử dụng để duy trì cấu trúc và tính rõ ràng trong mã nguồn.
 - **HTTP Status Codes**:
-- **201 Created**: Đối tượng giao hàng được tạo hoặc cập nhật thành công.
-- **404 Not Found**: Không tìm thấy giao hàng hoặc đơn hàng với ID tương ứng.
+- **`201 Created`**: Đối tượng giao hàng được tạo hoặc cập nhật thành công.
+- **`404 Not Found`**: Không tìm thấy giao hàng hoặc đơn hàng với ID tương ứng.

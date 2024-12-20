@@ -110,6 +110,6 @@
 ### **Notes**
 - **Validation**: Dữ liệu đầu vào được kiểm tra trong phần Request Body, các lỗi sẽ trả về mã lỗi HTTP phù hợp.
 - **HTTP Status Codes**:
-- **200 OK**: Thành công lấy hoặc cập nhật danh mục.
-- **204 No Content**: Thành công xóa danh mục.
-- **404 Not Found**: Không tìm thấy danh mục tương ứng.
+- **`200 OK`**: Thành công lấy hoặc cập nhật danh mục.
+- **`204 No Content`**: Thành công xóa danh mục.
+- **`404 Not Found`**: Không tìm thấy danh mục tương ứng.
