@@ -112,6 +112,6 @@
 ### **Notes**
 - **Validation**: Dữ liệu đầu vào được kiểm tra trong phần Request Body, các lỗi sẽ trả về mã lỗi HTTP phù hợp.
 - **HTTP Status Codes**:
-- **`200 OK`**: Thành công lấy hoặc cập nhật tùy chọn.
-- **`204 No Content`**: Thành công xóa tùy chọn.
-- **`404 Not Found`**: Không tìm thấy tùy chọn tương ứng.
+  - **`200 OK`**: Thành công lấy hoặc cập nhật tùy chọn.
+  - **`204 No Content`**: Thành công xóa tùy chọn.
+  - **`404 Not Found`**: Không tìm thấy tùy chọn tương ứng.

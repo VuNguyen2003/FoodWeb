@@ -125,7 +125,7 @@
 ### **Notes**
 - **Validation**: Các lỗi liên quan đến đầu vào hoặc logic sẽ trả về mã lỗi HTTP tương ứng.
 - **HTTP Status Codes**:
-- **`200 OK`**: Thành công lấy hoặc cập nhật chi tiết đơn hàng.
-- **`201 Created`**: Thành công tạo mới chi tiết đơn hàng.
-- **`204 No Content`**: Thành công xóa chi tiết đơn hàng.
-- **`404 Not Found`**: Không tìm thấy chi tiết đơn hàng tương ứng.
+  - **`200 OK`**: Thành công lấy hoặc cập nhật chi tiết đơn hàng.
+  - **`201 Created`**: Thành công tạo mới chi tiết đơn hàng.
+  - **`204 No Content`**: Thành công xóa chi tiết đơn hàng.
+  - **`404 Not Found`**: Không tìm thấy chi tiết đơn hàng tương ứng.
