@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AccountService {
@@ -36,10 +37,11 @@ public class AccountService {
         return accountRepository.findByUsername(username);
     }
 
-    public Account saveAccount(Account account) {
+    public Account createAccount(Account account) {
+        account.setAccountId(UUID.randomUUID().toString());
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         return accountRepository.save(account);
     }
-
     public boolean authenticate(String username, String password) {
         // Tìm tài khoản theo username
         Optional<Account> accountOptional = accountRepository.findByUsername(username);
@@ -158,4 +160,9 @@ public class AccountService {
         message.setText(body);
         mailSender.send(message);
     }
+    public Account getAccountById(String accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountExceptions.AccountNotFoundException("Account not found"));
+    }
+
 }

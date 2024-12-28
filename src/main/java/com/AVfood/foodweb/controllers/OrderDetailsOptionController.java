@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/order-details-options")
+@RequestMapping("/api/v1/order-details-options")
 public class OrderDetailsOptionController {
 
     private final OrderDetailsOptionService service;

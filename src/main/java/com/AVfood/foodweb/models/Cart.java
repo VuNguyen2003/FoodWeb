@@ -10,6 +10,9 @@ public class Cart {
     @Column(name = "cart_id", length = 100)
     private String cartId;
 
+    @Column(name = "account_id")
+    private String accountId;
+
     @Column(name = "status_id", length = 100)
     private String statusId;
 

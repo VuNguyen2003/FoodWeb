@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class OptionCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_category_id")
     private String optionCategoryId;
 

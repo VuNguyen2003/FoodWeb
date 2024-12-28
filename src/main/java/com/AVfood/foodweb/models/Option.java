@@ -3,11 +3,10 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "option")
+@Table(name = "`option`")
 public class Option {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "option_id")
     private String optionId;
 

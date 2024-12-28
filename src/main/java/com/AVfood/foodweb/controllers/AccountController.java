@@ -2,6 +2,7 @@ package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.dtos.request.AccountRequest;
 import com.AVfood.foodweb.dtos.request.UpdateAccountRequest;
+import com.AVfood.foodweb.dtos.response.TokenResponse;
 import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.services.AccountService;
 import com.AVfood.foodweb.services.TokenService;
@@ -43,7 +44,7 @@ public class AccountController {
         account.setEmail(accountRequest.getEmail());
         account.setAddress(accountRequest.getAddress());
 
-        accountService.saveAccount(account);
+        accountService.createAccount(account);
         return ResponseEntity.ok("Tài khoản đã được đăng ký thành công.");
     }
 
@@ -53,16 +54,32 @@ public class AccountController {
      * @return ResponseEntity chứa token và thông báo
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AccountRequest accountRequest) {
-        boolean isAuthenticated = accountService.authenticate(accountRequest.getUsername(), accountRequest.getPassword());
+    public ResponseEntity<TokenResponse> login(@RequestBody AccountRequest accountRequest) {
+        // Xác thực người dùng
+        boolean isAuthenticated = accountService.authenticate(
+                accountRequest.getUsername(), accountRequest.getPassword()
+        );
         if (!isAuthenticated) {
-            throw new AccountExceptions.AuthenticationFailedException("Tên người dùng hoặc mật khẩu không đúng!");
+            throw new AccountExceptions.AuthenticationFailedException(
+                    "Tên người dùng hoặc mật khẩu không đúng!"
+            );
         }
 
+        // Lấy thông tin tài khoản
+        Account account = accountService.findByUsername(accountRequest.getUsername())
+                .orElseThrow(() -> new AccountExceptions.AccountNotFoundException(
+                        "Không tìm thấy tài khoản với tên người dùng: " + accountRequest.getUsername()
+                ));
+
         // Tạo token
-        var token = tokenService.createToken(accountRequest.getUsername());
-        return ResponseEntity.ok("Đăng nhập thành công! Token của bạn: " + token.getTokenValue());
+        var token = tokenService.createToken(account.getAccountId());
+
+        // Trả về TokenResponse
+        return ResponseEntity.ok(new TokenResponse(token.getTokenValue(), token.getExpiryDate()));
     }
+
+
+
 
     /**
      * Cập nhật thông tin tài khoản
