@@ -3,7 +3,7 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "option")
+@Table(name = "`option`")
 public class Option {
 
     @Id

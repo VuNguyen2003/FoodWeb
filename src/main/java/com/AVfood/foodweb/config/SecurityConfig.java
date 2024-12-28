@@ -43,6 +43,8 @@ public class SecurityConfig {
     // Phương thức để lấy danh sách các endpoint công khai
     private Set<String> getPublicEndpoints() {
         return Set.of(
+                "/api/v1/account/newuser",
+                "/api/v1/account/login",
                 "/api/v1/account/register",
                 "/api/v1/cartitem/getallitems",
                 "/test-connection",

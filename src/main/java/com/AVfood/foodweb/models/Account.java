@@ -37,7 +37,6 @@ public class Account {
 
     // Constructors
     public Account() {
-        this.accountId = UUID.randomUUID().toString();
     }
 
     public Account(String accountId, String roleId, String paymentMethodId, String cartId, String fullName, String email, String address, String username, String password) {

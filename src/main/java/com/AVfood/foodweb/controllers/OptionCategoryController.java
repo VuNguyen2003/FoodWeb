@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/option-categories")
+@RequestMapping("/api/v1/option-categories")
 public class OptionCategoryController {
 
     private final OptionCategoryService service;

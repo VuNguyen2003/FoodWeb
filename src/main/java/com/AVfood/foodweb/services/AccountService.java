@@ -160,4 +160,9 @@ public class AccountService {
         message.setText(body);
         mailSender.send(message);
     }
+    public Account getAccountById(String accountId) {
+        return accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountExceptions.AccountNotFoundException("Account not found"));
+    }
+
 }
