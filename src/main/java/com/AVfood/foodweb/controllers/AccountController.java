@@ -43,7 +43,7 @@ public class AccountController {
         account.setEmail(accountRequest.getEmail());
         account.setAddress(accountRequest.getAddress());
 
-        accountService.saveAccount(account);
+        accountService.createAccount(account);
         return ResponseEntity.ok("Tài khoản đã được đăng ký thành công.");
     }
 
