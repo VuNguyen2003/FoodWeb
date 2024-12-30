@@ -3,14 +3,14 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "role")
+@Table(name = "Role")
 public class Role {
 
     @Id
-    @Column(name = "role_id", length = 100)
+    @Column(name = "Role_Id", length = 100)
     private String roleId;
 
-    // Constructors
+    // Constructors, Getters and Setters
     public Role() {}
 
     public Role(String roleId) {

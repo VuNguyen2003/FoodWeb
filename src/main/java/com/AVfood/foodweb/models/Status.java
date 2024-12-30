@@ -3,17 +3,17 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "status")
+@Table(name = "Status")
 public class Status {
 
     @Id
-    @Column(name = "status_id", length = 100)
+    @Column(name = "Status_Id", length = 100)
     private String statusId;
 
-    @Column(name = "status_name", length = 100)
+    @Column(name = "Status_Name", length = 100)
     private String statusName;
 
-    // Constructors
+    // Constructors, Getters and Setters
     public Status() {}
 
     public Status(String statusId, String statusName) {

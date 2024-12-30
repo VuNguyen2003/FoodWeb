@@ -3,43 +3,44 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "account")
+@Table(name = "Account")
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_id")
+    @Column(name = "Account_Id", length = 100)
     private String accountId;
 
+    @ManyToOne
+    @JoinColumn(name = "Role_Id")
+    private Role role;
 
-    @Column(name = "role_id", length = 255)
-    private String roleId;
+    @ManyToOne
+    @JoinColumn(name = "Payment_Method_Id")
+    private PaymentMethod paymentMethod;
 
-    @Column(name = "payment_method_id", length = 100)
-    private String paymentMethodId;
-
-    @Column(name = "full_name", length = 255)
+    @Column(name = "Full_Name", length = 255)
     private String fullName;
 
-    @Column(name = "email", length = 255)
+    @Column(name = "Email", length = 255)
     private String email;
 
-    @Column(name = "address", length = 100)
+    @Column(name = "Address", length = 100)
     private String address;
 
-    @Column(name = "username", length = 100)
+    @Column(name = "Username", length = 100)
     private String username;
 
-    @Column(name = "password", length = 100)
+    @Column(name = "Password", length = 100)
     private String password;
 
-    // Constructors
+    // Constructors, Getters and Setters
     public Account() {}
 
-    public Account(String accountId, String roleId, String paymentMethodId, String fullName, String email, String address, String username, String password) {
+    // Constructor with all fields
+    public Account(String accountId, Role role, PaymentMethod paymentMethod, String fullName, String email, String address, String username, String password) {
         this.accountId = accountId;
-        this.roleId = roleId;
-        this.paymentMethodId = paymentMethodId;
+        this.role = role;
+        this.paymentMethod = paymentMethod;
         this.fullName = fullName;
         this.email = email;
         this.address = address;
@@ -47,7 +48,6 @@ public class Account {
         this.password = password;
     }
 
-    // Getters and Setters
     public String getAccountId() {
         return accountId;
     }
@@ -56,20 +56,20 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public Role getRoleId() {
+        return role;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRoleId(Role role) {
+        this.role = role;
     }
 
-    public String getPaymentMethodId() {
-        return paymentMethodId;
+    public PaymentMethod getPaymentMethodId() {
+        return paymentMethod;
     }
 
-    public void setPaymentMethodId(String paymentMethodId) {
-        this.paymentMethodId = paymentMethodId;
+    public void setPaymentMethodId(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public String getFullName() {

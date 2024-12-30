@@ -3,17 +3,17 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "payment_method")
+@Table(name = "Payment_Method")
 public class PaymentMethod {
 
     @Id
-    @Column(name = "payment_method_id", length = 100)
+    @Column(name = "Payment_Method_Id", length = 100)
     private String paymentMethodId;
 
-    @Column(name = "payment_method_name", length = 100)
+    @Column(name = "Payment_Method_Name", length = 100)
     private String paymentMethodName;
 
-    // Constructors
+    // Constructors, Getters and Setters
     public PaymentMethod() {}
 
     public PaymentMethod(String paymentMethodId, String paymentMethodName) {

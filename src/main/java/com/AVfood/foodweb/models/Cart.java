@@ -1,31 +1,34 @@
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "cart")
+@Table(name = "Cart")
 public class Cart {
 
     @Id
-    @Column(name = "cart_id", length = 100)
+    @Column(name = "Cart_Id", length = 100)
     private String cartId;
 
-    @Column(name = "account_id")
-    private String accountId;
+    @ManyToOne
+    @JoinColumn(name = "Account_Id")
+    private Account account;
 
-    @Column(name = "status_id", length = 100)
-    private String statusId;
+    @ManyToOne
+    @JoinColumn(name = "Status_Id")
+    private Status status;
 
-    @Column(name = "cart_date")
-    private java.sql.Timestamp cartDate;
+    @Column(name = "Cart_Date")
+    private Timestamp cartDate;
 
     // Constructors
     public Cart() {}
 
-    public Cart(String cartId, String accountId, String statusId, java.sql.Timestamp cartDate) {
+    public Cart(String cartId, Account account, Status status, Timestamp cartDate) {
         this.cartId = cartId;
-        this.accountId = accountId;
-        this.statusId = statusId;
+        this.account = account;
+        this.status = status;
         this.cartDate = cartDate;
     }
 
@@ -38,23 +41,27 @@ public class Cart {
         this.cartId = cartId;
     }
 
-    public String getAccountId() { return accountId; }
-
-    public void setAccountId(String accountId) { this.accountId = accountId; }
-
-    public String getStatusId() {
-        return statusId;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public java.sql.Timestamp getCartDate() {
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Timestamp getCartDate() {
         return cartDate;
     }
 
-    public void setCartDate(java.sql.Timestamp cartDate) {
+    public void setCartDate(Timestamp cartDate) {
         this.cartDate = cartDate;
     }
 }
