@@ -18,9 +18,6 @@ public class Account {
     @Column(name = "payment_method_id", length = 100)
     private String paymentMethodId;
 
-    @Column(name = "cart_id", length = 100)
-    private String cartId;
-
     @Column(name = "full_name", length = 255)
     private String fullName;
 
@@ -39,11 +36,10 @@ public class Account {
     // Constructors
     public Account() {}
 
-    public Account(String accountId, String roleId, String paymentMethodId, String cartId, String fullName, String email, String address, String username, String password) {
+    public Account(String accountId, String roleId, String paymentMethodId, String fullName, String email, String address, String username, String password) {
         this.accountId = accountId;
         this.roleId = roleId;
         this.paymentMethodId = paymentMethodId;
-        this.cartId = cartId;
         this.fullName = fullName;
         this.email = email;
         this.address = address;
@@ -74,14 +70,6 @@ public class Account {
 
     public void setPaymentMethodId(String paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
-    }
-
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
     }
 
     public String getFullName() {

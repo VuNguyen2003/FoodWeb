@@ -10,6 +10,9 @@ public class Cart {
     @Column(name = "cart_id", length = 100)
     private String cartId;
 
+    @Column(name = "account_id")
+    private String accountId;
+
     @Column(name = "status_id", length = 100)
     private String statusId;
 
@@ -19,8 +22,9 @@ public class Cart {
     // Constructors
     public Cart() {}
 
-    public Cart(String cartId, String statusId, java.sql.Timestamp cartDate) {
+    public Cart(String cartId, String accountId, String statusId, java.sql.Timestamp cartDate) {
         this.cartId = cartId;
+        this.accountId = accountId;
         this.statusId = statusId;
         this.cartDate = cartDate;
     }
@@ -33,6 +37,10 @@ public class Cart {
     public void setCartId(String cartId) {
         this.cartId = cartId;
     }
+
+    public String getAccountId() { return accountId; }
+
+    public void setAccountId(String accountId) { this.accountId = accountId; }
 
     public String getStatusId() {
         return statusId;
