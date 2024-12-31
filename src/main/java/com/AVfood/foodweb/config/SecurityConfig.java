@@ -2,17 +2,32 @@ package com.AVfood.foodweb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 
 import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true); // Cho phép cookie hoặc xác thực
+        config.addAllowedOriginPattern("http://localhost:3000"); // Frontend URL
+        config.addAllowedHeader("*"); // Cho phép tất cả các header
+        config.addAllowedMethod("*"); // Cho phép tất cả các phương thức HTTP
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // Đăng ký cấu hình CORS cho tất cả các endpoint
+        return new CorsFilter(source);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,7 +58,10 @@ public class SecurityConfig {
     // Phương thức để lấy danh sách các endpoint công khai
     private Set<String> getPublicEndpoints() {
         return Set.of(
+                "/api/v1/account/register",
+                "/api/v1/account/login",
                 "/api/v1/cartitem/getallitems",
+                "/api/v1/products/**",
                 "/test-connection",
                 "/api/v1/products",
                 "/public/**", // Bổ sung thêm các endpoint không yêu cầu xác thực

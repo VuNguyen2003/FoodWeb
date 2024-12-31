@@ -12,20 +12,10 @@ import org.springframework.data.domain.PageRequest; // Đảm bảo bạn nhập
 import java.math.BigDecimal;
 import java.util.List;
 
-@Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
-    // Phương thức phân trang cho sản phẩm
-    Page<Product> findAll(Pageable pageable);
-
-    // Phương thức tìm sản phẩm theo khoảng giá
+    List<Product> findByProductNameContainingIgnoreCase(String name);
     List<Product> findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
-
-    // Phương thức tìm tất cả sản phẩm và sắp xếp theo giá tăng dần
     List<Product> findAllByOrderByPriceAsc();
-
-    // Phương thức tìm tất cả sản phẩm và sắp xếp theo giá giảm dần
     List<Product> findAllByOrderByPriceDesc();
-
-    @Query("SELECT p FROM Product p WHERE LOWER(p.productName) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<Product> findByProductNameContainingIgnoreCase(@Param("name") String name);
 }
+

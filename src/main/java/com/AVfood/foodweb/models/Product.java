@@ -8,31 +8,32 @@ import java.math.BigDecimal;
 public class Product {
 
     @Id
-    @Column(name = "product_id", length = 100)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Product_Id", length = 100)
     private String productId;
 
-    @Column(name = "category_id", length = 100)
+    @Column(name = "Category_Id", length = 100)
     private String categoryId;
 
-    @Column(name = "product_name", length = 100)
+    @Column(name = "Product_Name", length = 100)
     private String productName;
 
-    @Column(name = "product_description", length = 1000)
+    @Column(name = "Product_Description", length = 1000)
     private String productDescription;
 
-    @Column(name = "stock")
+    @Column(name = "Stock")
     private int stock;
 
-    @Column(name = "product_image_url", length = 1000)
+    @Column(name = "Product_Image_Url", length = 1000)
     private String productImageUrl;
 
-    @Column(name = "view")
+    @Column(name = "View")
     private int view;
 
-    @Column(name = "likes")
+    @Column(name = "Likes")
     private int likes;
 
-    @Column(name = "price", precision = 10, scale = 2)
+    @Column(name = "Price", precision = 10, scale = 2)
     private BigDecimal price;
 
     // Constructors

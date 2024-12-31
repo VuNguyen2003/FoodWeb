@@ -7,13 +7,13 @@ import jakarta.persistence.*;
 public class Category {
 
     @Id
-    @Column(name = "category_id", length = 100)
+    @Column(name = "Category_Id", length = 100)
     private String categoryId;
 
-    @Column(name = "status_id", length = 100)
+    @Column(name = "Status_Id", length = 100)
     private String statusId;
 
-    @Column(name = "order_name", length = 100)
+    @Column(name = "Order_Name", length = 100)
     private String orderName;
 
     // Constructors

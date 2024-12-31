@@ -1,16 +1,28 @@
 package com.AVfood.foodweb.dtos.request;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 
 public class ProductRequest {
     private String productId;
     private String categoryId;
+
+    @NotNull(message = "Product name cannot be null")
+    @Size(min = 1, max = 100, message = "Product name must be between 1 and 100 characters")
     private String productName;
     private String productDescription;
+
+    @PositiveOrZero(message = "Stock must be non-negative")
     private int stock;
     private String productImageUrl;
     private int view;
     private int likes;
+
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
     private BigDecimal price; // New price field
 
     // Getters and Setters

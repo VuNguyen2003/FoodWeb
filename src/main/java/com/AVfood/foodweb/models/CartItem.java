@@ -3,23 +3,23 @@ package com.AVfood.foodweb.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "cart_item")
+@Table(name = "Cart_Item")
 public class CartItem {
 
     @Id
-    @Column(name = "cart_item_id", length = 100)
+    @Column(name = "Cart_Item_Id", length = 100)
     private String cartItemId;
 
-    @Column(name = "cart_id", length = 100)
+    @Column(name = "Cart_Id", length = 100)
     private String cartId;
 
-    @Column(name = "product_id", length = 100)
+    @Column(name = "Product_Id", length = 100)
     private String productId;
 
-    @Column(name = "quantity_item")
+    @Column(name = "Quantity_Item")
     private int quantityItem;
 
-    @Column(name = "total_item", precision = 10, scale = 2)
+    @Column(name = "Total_Item", precision = 10, scale = 2)
     private java.math.BigDecimal totalItem;
 
     // Constructors

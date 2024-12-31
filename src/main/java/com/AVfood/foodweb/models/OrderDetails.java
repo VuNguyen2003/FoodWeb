@@ -7,19 +7,19 @@ import jakarta.persistence.*;
 public class OrderDetails {
 
     @Id
-    @Column(name = "order_detail_id", length = 100)
+    @Column(name = "Order_Detail_Id", length = 100)
     private String orderDetailId;
 
-    @Column(name = "product_id", length = 100)
+    @Column(name = "Product_Id", length = 100)
     private String productId;
 
-    @Column(name = "order_id", length = 100)
+    @Column(name = "Order_Id", length = 100)
     private String orderId;
 
-    @Column(name = "order_quantity")
+    @Column(name = "Order_Quantity")
     private int orderQuantity;
 
-    @Column(name = "order_total", precision = 10, scale = 2)
+    @Column(name = "Order_Total", precision = 10, scale = 2)
     private java.math.BigDecimal orderTotal;
 
     // Constructors

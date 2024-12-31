@@ -6,13 +6,17 @@ import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.services.AccountService;
 import com.AVfood.foodweb.exceptions.AccountExceptions; // Import lớp ngoại lệ
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/account")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
 
     private final AccountService accountService;
@@ -53,14 +57,19 @@ public class AccountController {
      * @return ResponseEntity chứa thông báo đăng nhập thành công hoặc lỗi
      */
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AccountRequest accountRequest) {
-        // Xác thực thông tin đăng nhập
+    public ResponseEntity<Map<String, String>> login(@RequestBody AccountRequest accountRequest) {
         boolean isAuthenticated = accountService.authenticate(accountRequest.getUsername(), accountRequest.getPassword());
-        if (!isAuthenticated) {
-            throw new AccountExceptions.AuthenticationFailedException("Tên người dùng hoặc mật khẩu không đúng!");
+
+        Map<String, String> response = new HashMap<>();
+        if (isAuthenticated) {
+            response.put("message", "Đăng nhập thành công!");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("message", "Tên đăng nhập hoặc mật khẩu không đúng!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-        return ResponseEntity.ok("Đăng nhập thành công!");
     }
+
 
     /**
      * Quên mật khẩu: gửi email để đặt lại mật khẩu
