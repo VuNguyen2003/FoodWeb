@@ -55,9 +55,9 @@ public class ProductService {
 
 
     // Phương thức lấy sản phẩm với phân trang
-    public Page<Product> getAllProducts(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);  // Tạo đối tượng Pageable
-        return productRepository.findAll(pageable);  // Trả về danh sách sản phẩm phân trang
+    // Phương thức lấy tất cả sản phẩm
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 
     // Phương thức tìm kiếm sản phẩm theo tên gần đúng

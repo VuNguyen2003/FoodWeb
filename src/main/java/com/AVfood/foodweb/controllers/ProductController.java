@@ -44,18 +44,10 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
-    // Lấy danh sách sản phẩm với phân trang
     @GetMapping
-    public ResponseEntity<Map<String, Object>> getAllProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        Page<Product> productPage = productService.getAllProducts(page, size);
-        Map<String, Object> response = new HashMap<>();
-        response.put("products", productPage.getContent());
-        response.put("currentPage", productPage.getNumber());
-        response.put("totalItems", productPage.getTotalElements());
-        response.put("totalPages", productPage.getTotalPages());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     // Cập nhật sản phẩm
