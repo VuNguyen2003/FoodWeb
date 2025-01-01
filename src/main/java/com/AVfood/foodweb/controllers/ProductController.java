@@ -1,6 +1,7 @@
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.dtos.request.ProductRequest;
+import com.AVfood.foodweb.exceptions.ProductNotFoundException;
 import com.AVfood.foodweb.models.Product;
 import com.AVfood.foodweb.services.ProductService;
 import jakarta.validation.Valid;
@@ -15,9 +16,9 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/v1/products")
-@CrossOrigin(origins = "http://localhost:3000") // Cho phép truy cập từ React frontend
 public class ProductController {
 
     private final ProductService productService;
@@ -41,7 +42,11 @@ public class ProductController {
     // Lấy thông tin sản phẩm theo ID
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable String id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+        Product product = productService.getProductById(id);
+        if (product == null) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        return ResponseEntity.ok(product);
     }
 
     @GetMapping

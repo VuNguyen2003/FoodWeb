@@ -1,11 +1,13 @@
 package com.AVfood.foodweb.controllers;
 
-import com.AVfood.foodweb.dto.CartRequest;
+import com.AVfood.foodweb.dtos.request.CartRequest;
+import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.models.Cart;
 import com.AVfood.foodweb.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -16,79 +18,42 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    /**
-     * Tạo một Cart mới
-     *
-     * @param cartRequest Dữ liệu từ client để tạo Cart
-     * @return Cart đã được tạo
-     */
     @PostMapping
-    public ResponseEntity<Cart> createCart(@RequestBody CartRequest cartRequest) {
-        try {
-            Cart createdCart = cartService.createCart(cartRequest);
-            return ResponseEntity.ok(createdCart);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<Cart> createCart(@RequestBody CartRequest request) {
+        Cart createdCart = cartService.createCart(request);
+        return ResponseEntity.ok(createdCart);
     }
 
-    /**
-     * Lấy tất cả các Cart
-     *
-     * @return Danh sách tất cả các Cart
-     */
     @GetMapping
     public ResponseEntity<List<Cart>> getAllCarts() {
         List<Cart> carts = cartService.getAllCarts();
         return ResponseEntity.ok(carts);
     }
 
-    /**
-     * Lấy một Cart theo ID
-     *
-     * @param cartId ID của Cart
-     * @return Cart nếu tồn tại
-     */
     @GetMapping("/{cartId}")
     public ResponseEntity<Cart> getCartById(@PathVariable String cartId) {
-        try {
-            Cart cart = cartService.getCartById(cartId);
-            return ResponseEntity.ok(cart);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        Cart cart = cartService.getCartById(cartId);
+        return ResponseEntity.ok(cart);
     }
 
-    /**
-     * Cập nhật một Cart
-     *
-     * @param cartId      ID của Cart cần cập nhật
-     * @param cartRequest Dữ liệu cập nhật từ client
-     * @return Cart đã được cập nhật
-     */
+    @GetMapping("/user/{accountId}")
+    public ResponseEntity<List<Cart>> getCartsByAccountId(@PathVariable Account accountId) {
+        List<Cart> carts = cartService.getCartsByAccountId(accountId);
+        if (carts.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(carts);
+    }
+
     @PutMapping("/{cartId}")
-    public ResponseEntity<Cart> updateCart(@PathVariable String cartId, @RequestBody CartRequest cartRequest) {
-        try {
-            Cart updatedCart = cartService.updateCart(cartId, cartRequest);
-            return ResponseEntity.ok(updatedCart);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<Cart> updateCart(@PathVariable String cartId, @RequestBody CartRequest request) {
+        Cart updatedCart = cartService.updateCart(cartId, request);
+        return ResponseEntity.ok(updatedCart);
     }
 
-    /**
-     * Xóa một Cart
-     *
-     * @param cartId ID của Cart cần xóa
-     * @return ResponseEntity không có nội dung
-     */
     @DeleteMapping("/{cartId}")
     public ResponseEntity<Void> deleteCart(@PathVariable String cartId) {
-        try {
-            cartService.deleteCart(cartId);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
+        cartService.deleteCart(cartId);
+        return ResponseEntity.noContent().build();
     }
 }

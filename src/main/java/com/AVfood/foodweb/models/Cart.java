@@ -2,6 +2,7 @@ package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import com.AVfood.foodweb.models.Account;
 
 @Entity
 @Table(name = "Cart")
@@ -12,7 +13,7 @@ public class Cart {
     private String cartId;
 
     @ManyToOne
-    @JoinColumn(name = "Account_Id")
+    @JoinColumn(name = "Account_Id") // Matches the `accountId` field in the `Account` entity
     private Account account;
 
     @ManyToOne
@@ -22,10 +23,10 @@ public class Cart {
     @Column(name = "Cart_Date")
     private Timestamp cartDate;
 
-    // Constructors
-    public Cart() {}
+    public Cart() {
+    }
 
-    public Cart(String cartId, Account account, Status status, Timestamp cartDate) {
+    public Cart (String cartId, Account account, Status status, Timestamp cartDate) {
         this.cartId = cartId;
         this.account = account;
         this.status = status;

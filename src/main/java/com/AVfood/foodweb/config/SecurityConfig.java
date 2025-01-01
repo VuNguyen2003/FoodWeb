@@ -58,16 +58,13 @@ public class SecurityConfig {
     // Phương thức để lấy danh sách các endpoint công khai
     private Set<String> getPublicEndpoints() {
         return Set.of(
-                "/api/v1/account/register",
-                "/api/v1/account/login",
-                "/api/v1/cartitem/getallitems",
+                "/api/v1/account/*",
+                "/api/v1/cartitem/*",
                 "/api/v1/products/**",
-                "/test-connection",
+                "/api/v1/products/{id}",
                 "/api/v1/products",
-                "/public/**", // Bổ sung thêm các endpoint không yêu cầu xác thực
-                "/register", // Cho phép truy cập trang đăng ký
-                "/login", // Cho phép truy cập trang đăng nhập
-                "/logout" // Cho phép truy cập trang đăng xuất
+                "/test-connection",
+                "/public/**" // Bổ sung thêm các endpoint không yêu cầu xác thực
         );
     }
 

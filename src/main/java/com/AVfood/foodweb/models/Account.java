@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Account {
 
     @Id
-    @Column(name = "Account_Id", length = 100)
+    @Column(name = "Account_Id", length = 100) // Maps to the "Account_Id" column in the database
     private String accountId;
 
     @ManyToOne
@@ -33,11 +33,9 @@ public class Account {
     @Column(name = "Password", length = 100)
     private String password;
 
-    // Constructors, Getters and Setters
-    public Account() {}
+    public Account(){}
 
-    // Constructor with all fields
-    public Account(String accountId, Role role, PaymentMethod paymentMethod, String fullName, String email, String address, String username, String password) {
+    public Account (String accountId, Role role, PaymentMethod paymentMethod, String fullName, String email, String address, String username, String password){
         this.accountId = accountId;
         this.role = role;
         this.paymentMethod = paymentMethod;
@@ -48,6 +46,7 @@ public class Account {
         this.password = password;
     }
 
+    // Getters and Setters
     public String getAccountId() {
         return accountId;
     }
@@ -56,19 +55,19 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public Role getRoleId() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRoleId(Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public PaymentMethod getPaymentMethodId() {
+    public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethodId(PaymentMethod paymentMethod) {
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

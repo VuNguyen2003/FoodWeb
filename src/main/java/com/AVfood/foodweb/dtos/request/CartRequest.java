@@ -1,23 +1,12 @@
-package com.AVfood.foodweb.dto;
+package com.AVfood.foodweb.dtos.request;
 
 import java.sql.Timestamp;
 
 public class CartRequest {
-
     private String cartId;
     private String accountId;
     private String statusId;
     private Timestamp cartDate;
-
-    // Constructors
-    public CartRequest() {}
-
-    public CartRequest(String cartId, String accountId, String statusId, Timestamp cartDate) {
-        this.cartId = cartId;
-        this.accountId = accountId;
-        this.statusId = statusId;
-        this.cartDate = cartDate;
-    }
 
     // Getters and Setters
     public String getCartId() {
