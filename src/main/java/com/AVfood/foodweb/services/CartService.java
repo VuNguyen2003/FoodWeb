@@ -3,12 +3,15 @@ package com.AVfood.foodweb.services;
 import com.AVfood.foodweb.dtos.request.CartRequest;
 import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.models.Cart;
+import com.AVfood.foodweb.models.CartItem;
 import com.AVfood.foodweb.models.Status;
 import com.AVfood.foodweb.repositories.AccountRepository;
 import com.AVfood.foodweb.repositories.CartRepository;
 import com.AVfood.foodweb.repositories.StatusRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.AVfood.foodweb.repositories.*;
 
 import java.util.List;
 
@@ -23,6 +26,9 @@ public class CartService {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     public Cart createCart(CartRequest request) {
         Account account = accountRepository.findById(request.getAccountId())
@@ -79,4 +85,13 @@ public class CartService {
         Cart cart = getCartById(cartId);
         cartRepository.delete(cart);
     }
+
+    public void addItemToCart(String cartId, CartItem item) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() ->
+                new RuntimeException("Cart not found with id: " + cartId));
+        // Thêm logic xử lý sản phẩm
+        item.setCartId(cartId);
+        cartItemRepository.save(item);
+    }
+
 }

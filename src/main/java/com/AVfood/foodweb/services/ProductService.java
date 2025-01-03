@@ -129,4 +129,33 @@ public class ProductService {
     public List<Product> getAllProductsSortedByPriceDesc() {
         return productRepository.findAllByOrderByPriceDesc();
     }
+
+    public Product updateProductWithImage(String id, ProductRequest request, MultipartFile imageFile) throws IOException {
+        // Lấy sản phẩm hiện có, nếu không tìm thấy => ném exception
+        Product existingProduct = getProductById(id);
+
+        // Cập nhật các trường text từ request
+        existingProduct.setCategoryId(request.getCategoryId());
+        existingProduct.setProductName(request.getProductName());
+        existingProduct.setProductDescription(request.getProductDescription());
+        existingProduct.setStock(request.getStock());
+        existingProduct.setPrice(request.getPrice());
+        existingProduct.setView(request.getView());
+        existingProduct.setLikes(request.getLikes());
+
+        // (Tuỳ ý) Nếu bạn muốn cho phép xoá ảnh cũ, có thể thêm cờ "removeImage"
+        // if (request.isRemoveImage()) {
+        //     existingProduct.setProductImageUrl(null);
+        // } else ...
+
+        // Chỉ cập nhật ảnh khi thực sự có file mới
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // saveImage(...) là hàm riêng lưu file và trả về đường dẫn
+            String newImageUrl = saveImage(imageFile);
+            existingProduct.setProductImageUrl(newImageUrl);
+        }
+
+        return productRepository.save(existingProduct);
+    }
+
 }

@@ -48,18 +48,32 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody AccountRequest accountRequest) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody AccountRequest accountRequest) {
         boolean isAuthenticated = accountService.authenticate(accountRequest.getUsername(), accountRequest.getPassword());
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         if (isAuthenticated) {
+            // Lấy Account từ DB
+            Account account = accountService.findByUsername(accountRequest.getUsername()).get();
+
+            // Lấy role (nếu null thì gán mặc định là "USER" hoặc tùy bạn)
+            String roleId = (account.getRole() != null) ? account.getRole().getRoleId() : "USER";
+
             response.put("message", "Đăng nhập thành công!");
+            response.put("username", account.getUsername());
+            response.put("role", roleId);
+
+            // Bạn cũng có thể trả về các trường khác nếu cần
+            // response.put("email", account.getEmail());
+            // response.put("fullName", account.getFullName());
+
             return ResponseEntity.ok(response);
         } else {
             response.put("message", "Tên đăng nhập hoặc mật khẩu không đúng!");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
+
 
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
@@ -97,4 +111,11 @@ public class AccountController {
 
         return ResponseEntity.ok("Cập nhật thông tin thành công!");
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateAccountInfo(@RequestBody UpdateAccountRequest updateRequest) {
+        // Logic to update the account information
+        return ResponseEntity.ok("Profile updated successfully");
+    }
+
 }

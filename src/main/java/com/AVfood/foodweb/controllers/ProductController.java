@@ -27,7 +27,6 @@ public class ProductController {
         this.productService = productService;
     }
 
-    // Tạo sản phẩm mới
     @PostMapping
     public ResponseEntity<Map<String, Object>> createProduct(
             @RequestPart("product") ProductRequest productRequest,
@@ -55,17 +54,6 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    // Cập nhật sản phẩm
-    @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updateProduct(
-            @PathVariable String id,
-            @Valid @RequestBody ProductRequest request) {
-        Product updatedProduct = productService.updateProduct(id, request);
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "Product updated successfully");
-        response.put("product", updatedProduct);
-        return ResponseEntity.ok(response);
-    }
 
     // Xóa sản phẩm
     @DeleteMapping("/{id}")
@@ -101,4 +89,23 @@ public class ProductController {
     public ResponseEntity<List<Product>> searchProducts(@RequestParam String name) {
         return ResponseEntity.ok(productService.searchProducts(name));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateProduct(
+            @PathVariable String id,
+            @RequestPart("product") ProductRequest request,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile
+    ) throws IOException {
+
+        // Gọi service để cập nhật
+        Product updatedProduct = productService.updateProductWithImage(id, request, imageFile);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Product updated successfully");
+        response.put("product", updatedProduct);
+        return ResponseEntity.ok(response);
+    }
+
+
+
 }

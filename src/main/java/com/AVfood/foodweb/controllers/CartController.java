@@ -3,6 +3,7 @@ package com.AVfood.foodweb.controllers;
 import com.AVfood.foodweb.dtos.request.CartRequest;
 import com.AVfood.foodweb.models.Account;
 import com.AVfood.foodweb.models.Cart;
+import com.AVfood.foodweb.models.CartItem;
 import com.AVfood.foodweb.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -56,4 +57,13 @@ public class CartController {
         cartService.deleteCart(cartId);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{cartId}/add-item")
+    public ResponseEntity<Void> addItemToCart(
+            @PathVariable String cartId,
+            @RequestBody CartItem item) {
+        cartService.addItemToCart(cartId, item);
+        return ResponseEntity.ok().build();
+    }
+
 }
