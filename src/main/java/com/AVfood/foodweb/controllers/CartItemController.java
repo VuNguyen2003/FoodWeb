@@ -1,8 +1,10 @@
 package com.AVfood.foodweb.controllers;
 
+import com.AVfood.foodweb.dtos.request.CartItemRequest;
 import com.AVfood.foodweb.exceptions.CartItemException; // Import exception
 import com.AVfood.foodweb.models.CartItem;
 import com.AVfood.foodweb.services.CartItemService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,17 +20,15 @@ public class CartItemController {
         this.cartItemService = cartItemService;
     }
 
-    @PostMapping("/additems")
-    public ResponseEntity<String> addItems(@RequestBody List<CartItem> items) {
-        // Kiểm tra nếu danh sách items rỗng
-        if (items == null || items.isEmpty()) {
-            throw new CartItemException("Danh sách items không thể rỗng!");
+    @PostMapping("/additem")
+    public ResponseEntity<String> addItem(@RequestBody @Valid CartItemRequest itemRequest) {
+        if (itemRequest == null) {
+            throw new CartItemException("Item không được null!");
         }
-
-        // Thêm logic để lưu các items vào cơ sở dữ liệu
-        cartItemService.addCartItems(items);
-        return ResponseEntity.ok("Received: " + items.toString());
+        cartItemService.addCartItem(itemRequest);
+        return ResponseEntity.ok("Added: " + itemRequest.getCartItemId());
     }
+
 
     @GetMapping("/getallitems")
     public ResponseEntity<List<CartItem>> getAllCartItems() {
@@ -42,7 +42,7 @@ public class CartItemController {
     }
 
     @DeleteMapping("/remove/{id}")
-    public ResponseEntity<Void> deleteCartItem(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCartItem(@PathVariable String id) {
         if (!cartItemService.existsById(id)) {
             throw new CartItemException("Không tìm thấy CartItem với ID: " + id); // Ném exception nếu không tìm thấy
         }

@@ -1,49 +1,69 @@
+// OrderService.java
 package com.AVfood.foodweb.services;
 
-import com.AVfood.foodweb.exceptions.OrderNotFoundException;
+import com.AVfood.foodweb.models.OrderDetails;
 import com.AVfood.foodweb.models.Orders;
+import com.AVfood.foodweb.models.Product;
 import com.AVfood.foodweb.repositories.OrdersRepository;
-import com.AVfood.foodweb.dtos.request.OrdersRequest;
+import com.AVfood.foodweb.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class OrdersService {
 
     @Autowired
-    private OrdersRepository repository;
+    private OrdersRepository ordersRepository;
 
-    public List<Orders> getAllOrders() {
-        return repository.findAll();
-    }
+    @Autowired
+    private ProductRepository productRepository;
 
-    public Orders getOrderById(String id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException("Order not found with id " + id));
-    }
+    @Transactional
+    public Orders createOrder(String accountId, String paymentMethod, List<Map<String, Object>> items) {
+        String orderId = UUID.randomUUID().toString();
+        Orders order = new Orders();
+        order.setOrderId(orderId);
+        order.setAccountId(accountId);
+        order.setStatusId("NEW"); // Initial status
+        order.setOrderName("Order #" + orderId);
 
-    public Orders createOrder(OrdersRequest dto) {
-        Orders order = new Orders(
-                dto.getOrderId(),
-                dto.getStatusId(),
-                dto.getOrderName()
-        );
-        return repository.save(order);
-    }
+        List<OrderDetails> orderDetailsList = new ArrayList<>();
+        BigDecimal totalAmount = BigDecimal.ZERO;
 
-    public Orders updateOrder(String id, OrdersRequest dto) {
-        Orders order = getOrderById(id);
-        order.setStatusId(dto.getStatusId());
-        order.setOrderName(dto.getOrderName());
-        return repository.save(order);
-    }
+        for (Map<String, Object> item : items) {
+            String productId = (String) item.get("productId");
+            int quantity = (int) item.get("quantity");
 
-    public void deleteOrder(String id) {
-        if (!repository.existsById(id)) {
-            throw new OrderNotFoundException("Order not found with id " + id);
+            Optional<Product> optionalProduct = productRepository.findById(productId);
+            if (!optionalProduct.isPresent()) {
+                throw new RuntimeException("Product not found: " + productId);
+            }
+            Product product = optionalProduct.get();
+
+            BigDecimal itemTotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+            totalAmount = totalAmount.add(itemTotal);
+
+            OrderDetails orderDetail = new OrderDetails();
+            orderDetail.setOrderDetailId(UUID.randomUUID().toString());
+            orderDetail.setOrder(order);
+            orderDetail.setProduct(product);
+            orderDetail.setOrderQuantity(quantity);
+            orderDetail.setOrderTotal(itemTotal);
+
+            orderDetailsList.add(orderDetail);
         }
-        repository.deleteById(id);
+
+        order.setOrderDetails(orderDetailsList);
+        ordersRepository.save(order);
+
+        return order;
+    }
+
+    public List<Orders> getOrderHistory(String accountId) {
+        return ordersRepository.findByAccountId(accountId);
     }
 }

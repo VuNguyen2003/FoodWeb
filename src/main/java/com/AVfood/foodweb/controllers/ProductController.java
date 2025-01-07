@@ -29,7 +29,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createProduct(
-            @RequestPart("product") ProductRequest productRequest,
+            @RequestPart("product") @Valid ProductRequest productRequest,
             @RequestPart("image") MultipartFile imageFile) throws IOException {
         Product product = productService.createProductWithImage(productRequest, imageFile);
         Map<String, Object> response = new HashMap<>();

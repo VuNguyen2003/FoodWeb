@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -26,6 +27,8 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
+
 
     public Product createProduct(ProductRequest request) {
         Product product = new Product(
@@ -113,7 +116,8 @@ public class ProductService {
         Path filePath = uploadPath.resolve(fileName);
         Files.write(filePath, imageFile.getBytes());
 
-        return "/images/" + fileName;
+        // Return the full URL
+        return "/home/vunguyen/Documents/FE/foodweb_FEver1/src/images" + fileName ;
     }
 
     public List<Product> getProductsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {

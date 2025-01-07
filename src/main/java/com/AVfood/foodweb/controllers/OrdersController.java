@@ -1,48 +1,52 @@
+// OrderController.java
 package com.AVfood.foodweb.controllers;
 
 import com.AVfood.foodweb.models.Orders;
-import com.AVfood.foodweb.dtos.request.OrdersRequest;
 import com.AVfood.foodweb.services.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/orders")
 public class OrdersController {
 
     @Autowired
-    private OrdersService service;
+    private OrdersService orderService;
 
-    @GetMapping
-    public List<Orders> getAllOrders() {
-        return service.getAllOrders();
-    }
+    /**
+     * Create a new order
+     * POST /api/orders
+     * Request Body:
+     * {
+     *   "paymentMethod": "Credit Card",
+     *   "items": [
+     *     { "productId": "prod1", "quantity": 2 },
+     *     { "productId": "prod2", "quantity": 1 }
+     *   ]
+     * }
+     */
+    @PostMapping
+    public ResponseEntity<Orders> createOrder(@RequestBody Map<String, Object> payload, Principal principal) {
+        String paymentMethod = (String) payload.get("paymentMethod");
+        List<Map<String, Object>> items = (List<Map<String, Object>>) payload.get("items");
+        String accountId = principal.getName(); // Simplification: using username as accountId
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Orders> getOrderById(@PathVariable String id) {
-        Orders order = service.getOrderById(id);
+        Orders order = orderService.createOrder(accountId, paymentMethod, items);
         return ResponseEntity.ok(order);
     }
 
-    @PostMapping
-    public ResponseEntity<Orders> createOrder(@RequestBody OrdersRequest dto) {
-        Orders order = service.createOrder(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Orders> updateOrder(@PathVariable String id, @RequestBody OrdersRequest dto) {
-        Orders updatedOrder = service.updateOrder(id, dto);
-        return ResponseEntity.ok(updatedOrder);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable String id) {
-        service.deleteOrder(id);
-        return ResponseEntity.noContent().build();
+    /**
+     * Get order history
+     * GET /api/orders/history
+     */
+    @GetMapping("/history")
+    public ResponseEntity<List<Orders>> getOrderHistory(Principal principal) {
+        String accountId = principal.getName();
+        List<Orders> orders = orderService.getOrderHistory(accountId);
+        return ResponseEntity.ok(orders);
     }
 }

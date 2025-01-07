@@ -1,5 +1,6 @@
 package com.AVfood.foodweb.services;
 
+import com.AVfood.foodweb.dtos.request.CartItemRequest;
 import com.AVfood.foodweb.repositories.CartItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.AVfood.foodweb.models.CartItem;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CartItemService {
@@ -43,15 +45,31 @@ public class CartItemService {
         return cartItemRepository.findAll();
     }
 
-    public void removeCartItem(Long id) {
+    public void removeCartItem(String id) {
         cartItemRepository.deleteById(id);
     }
 
-    public boolean existsById(Long id) {
+    public boolean existsById(String id) {
         return cartItemRepository.existsById(id);
     }
 
-    public void addCartItems(List<CartItem> items) {
-        cartItemRepository.saveAll(items); // Lưu tất cả các CartItem vào cơ sở dữ liệu
+    @Transactional
+    public void addCartItem(CartItemRequest itemRequest) {
+        // Tạo một cartItemId duy nhất nếu chưa được cung cấp
+        String cartItemId = itemRequest.getCartItemId();
+        if (cartItemId == null || cartItemId.isEmpty()) {
+            cartItemId = UUID.randomUUID().toString();
+        }
+
+        CartItem cartItem = new CartItem(
+                cartItemId,
+                itemRequest.getCartId(),
+                String.valueOf(itemRequest.getProductId()), // Đảm bảo là String
+                itemRequest.getQuantityItem(),
+                itemRequest.getTotalItem()
+        );
+
+        cartItemRepository.save(cartItem);
     }
+
 }

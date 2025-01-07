@@ -1,3 +1,4 @@
+// OrderDetailsRequest.java
 package com.AVfood.foodweb.dtos.request;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ public class OrderDetailsRequest {
     private int orderQuantity;
     private BigDecimal orderTotal;
 
-    // Getters and Setters
+    // Getters và Setters
 
     public String getOrderDetailId() {
         return orderDetailId;

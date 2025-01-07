@@ -1,6 +1,8 @@
+// OrderDetails.java
 package com.AVfood.foodweb.models;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_details")
@@ -10,30 +12,31 @@ public class OrderDetails {
     @Column(name = "Order_Detail_Id", length = 100)
     private String orderDetailId;
 
-    @Column(name = "Product_Id", length = 100)
-    private String productId;
+    @ManyToOne
+    @JoinColumn(name = "Product_Id", referencedColumnName = "Product_Id")
+    private Product product;
 
-    @Column(name = "Order_Id", length = 100)
-    private String orderId;
+    @ManyToOne
+    @JoinColumn(name = "Order_Id", referencedColumnName = "Order_Id")
+    private Orders order;
 
     @Column(name = "Order_Quantity")
     private int orderQuantity;
 
     @Column(name = "Order_Total", precision = 10, scale = 2)
-    private java.math.BigDecimal orderTotal;
+    private BigDecimal orderTotal;
 
-    // Constructors
+    // Constructors, Getters, and Setters
     public OrderDetails() {}
 
-    public OrderDetails(String orderDetailId, String productId, String orderId, int orderQuantity, java.math.BigDecimal orderTotal) {
+    public OrderDetails(String orderDetailId, Product product, Orders order, int orderQuantity, BigDecimal orderTotal) {
         this.orderDetailId = orderDetailId;
-        this.productId = productId;
-        this.orderId = orderId;
+        this.product = product;
+        this.order = order;
         this.orderQuantity = orderQuantity;
         this.orderTotal = orderTotal;
     }
 
-    // Getters and Setters
     public String getOrderDetailId() {
         return orderDetailId;
     }
@@ -42,20 +45,20 @@ public class OrderDetails {
         this.orderDetailId = orderDetailId;
     }
 
-    public String getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 
     public int getOrderQuantity() {
@@ -66,11 +69,11 @@ public class OrderDetails {
         this.orderQuantity = orderQuantity;
     }
 
-    public java.math.BigDecimal getOrderTotal() {
+    public BigDecimal getOrderTotal() {
         return orderTotal;
     }
 
-    public void setOrderTotal(java.math.BigDecimal orderTotal) {
+    public void setOrderTotal(BigDecimal orderTotal) {
         this.orderTotal = orderTotal;
     }
 }
